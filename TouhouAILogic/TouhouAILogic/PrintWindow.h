@@ -2,5 +2,5 @@
 
 class WindowPrint {
 public:
-	void Print();
+	void Print(System::IntPtr);
 };

@@ -5,11 +5,12 @@
 #include "TouhouAILogic.h"
 #include "KeyManage.h"
 #include "ImageRecognition.h"
+#include "PrintWindow.h"
 
-String^ TouhouAILogic::MainProc::Test()
+System::String^ TouhouAILogic::MainProc::Test(System::IntPtr hw)
 {
-	ImageRecognition aa;
-	aa.test();
+	WindowPrint aa;
+	aa.Print(hw);
 	return "te22277777st";
 }
 

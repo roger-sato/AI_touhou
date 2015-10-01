@@ -32,16 +32,28 @@ namespace TouhouAIUI
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-             p = System.Diagnostics.Process.Start(ofd.FileName);
+            p = System.Diagnostics.Process.Start(ofd.FileName);
+
+            //念のため待つ。
+            p.WaitForInputIdle();
+
+            //ウィンドウハンドルが取得できるか、
+            //生成したプロセスが終了するまで待ってみる。
+            while (p.MainWindowHandle == IntPtr.Zero &&
+            p.HasExited == false)
+            {
+                System.Threading.Thread.Sleep(1);
+                p.Refresh();
+            }
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            ofd =  new OpenFileDialog();
+            ofd = new OpenFileDialog();
             ofd.FileName = "";
             ofd.DefaultExt = "*.*";
             ofd.ShowDialog();
-            
+
 
         }
 
@@ -79,10 +91,13 @@ namespace TouhouAIUI
         {
             p = Process.GetProcessesByName("th15")[0];
         }
-
+        
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            Test.Content = main_proc.Test();
+            // SendKeyPre();
+            Test.Content = main_proc.Test(p.MainWindowHandle) ;
+            
         }
+   
     }
 }

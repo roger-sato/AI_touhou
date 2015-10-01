@@ -1,8 +1,5 @@
 // TouhouAILogic.h
-
 #pragma once
-
-using namespace System;
 
 namespace TouhouAILogic {
 
@@ -10,7 +7,7 @@ namespace TouhouAILogic {
 	{
 		// TODO: このクラスの、ユーザーのメソッドをここに追加してください。
 	public:
-		String^ Test();
+		System::String^ Test(System::IntPtr);
 		void Up();
 		void Down();
 		void Right();

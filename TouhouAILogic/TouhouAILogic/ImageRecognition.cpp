@@ -1,7 +1,7 @@
+#include "stdafx.h"
 #include <Windows.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2\highgui\highgui.hpp>
-#include "stdafx.h"
 #include "ImageRecognition.h"
 
 
