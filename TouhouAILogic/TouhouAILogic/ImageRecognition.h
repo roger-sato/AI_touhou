@@ -4,7 +4,7 @@ namespace TouhouAILogic {
 	public class ImageRecognition 
 	{
 	public:
-		void test();
+		void test(System::IntPtr);
 	};
 
 }

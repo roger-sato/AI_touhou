@@ -51,6 +51,7 @@ void SendKey(short keycode)
 
 	Sleep(20);
 
+
 	inp[1].type = INPUT_KEYBOARD;
 	inp[1].ki.wVk = keycode;
 	inp[1].ki.wScan = (short)MapVirtualKey(inp[1].ki.wVk, 0);

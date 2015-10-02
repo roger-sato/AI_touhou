@@ -9,8 +9,8 @@
 
 System::String^ TouhouAILogic::MainProc::Test(System::IntPtr hw)
 {
-	WindowPrint aa;
-	aa.Print(hw);
+	ImageRecognition aa;
+	aa.test(hw);
 	return "te22277777st";
 }
 

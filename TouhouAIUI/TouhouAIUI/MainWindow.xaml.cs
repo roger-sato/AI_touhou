@@ -53,8 +53,6 @@ namespace TouhouAIUI
             ofd.FileName = "";
             ofd.DefaultExt = "*.*";
             ofd.ShowDialog();
-
-
         }
 
         private void Up_Click(object sender, RoutedEventArgs e)
@@ -95,8 +93,8 @@ namespace TouhouAIUI
         private void Test_Click(object sender, RoutedEventArgs e)
         {
             // SendKeyPre();
-            Test.Content = main_proc.Test(p.MainWindowHandle) ;
-            
+            //Test.Content = main_proc.Test(p.MainWindowHandle);
+            Test.Content = main_proc.Test(Process.GetProcessesByName("th15")[0].MainWindowHandle);
         }
    
     }
