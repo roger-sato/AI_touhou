@@ -10,6 +10,7 @@
 
 BOOL WriteBitmap(LPTSTR lpszFileName, int nWidth, int nHeight, LPVOID lpBits);
 HBITMAP CreateBackbuffer(int nWidth, int nHeight);
+HBITMAP CreateBackbuffer2(int nWidth, int nHeight);
 BITMAPINFOHEADER MakeBITINFO(int nWidth, int nHeight, LPVOID lpBits);
 
 void WindowPrint::Print(System::IntPtr hw)
@@ -27,25 +28,13 @@ void WindowPrint::Print(System::IntPtr hw)
 	debug_out << rc.right << std::endl << rc.bottom << std::endl;
 
 	hdc = CreateCompatibleDC(NULL);
-	hbmp = CreateBackbuffer(rc.right,rc.bottom);
+	hbmp = CreateBackbuffer2(rc.right,rc.bottom);
 	hbmpPrev = (HBITMAP)SelectObject(hdc, hbmp);
 
 	BitBlt(hdc, 0, 0, rc.right, rc.bottom, GetWindowDC(hwnd), 0, 0, SRCCOPY);
 	
 	GetObject(hbmp, sizeof(BITMAP), &bm);
 	
-	cv::Mat image;
-	//image.create(bm.bmWidth,bm.bmHeight, CV_8UC4);
-	image.create(rc.bottom, rc.right, CV_8UC4);
-
-	BITMAPINFOHEADER bi = MakeBITINFO(rc.right, rc.bottom, bm.bmBits);
-	
-	GetDIBits(hdc, hbmp, 0, bm.bmHeight, image.data, (BITMAPINFO*)&bi,DIB_RGB_COLORS);
-
-	cv::namedWindow("red", cv::WINDOW_AUTOSIZE);
-	cv::imshow("red", image);
-	cv::waitKey(0);
-	cv::destroyAllWindows();
 	
 	WriteBitmap(TEXT("capture.bmp"), rc.right, rc.bottom, bm.bmBits);
 
@@ -137,6 +126,26 @@ HBITMAP CreateBackbuffer(int nWidth, int nHeight)
 	bmiHeader.biPlanes = 1;
 	//bmiHeader.biBitCount = 24;
 	bmiHeader.biBitCount = 32;
+
+	bmi.bmiHeader = bmiHeader;
+
+	return CreateDIBSection(NULL, (LPBITMAPINFO)&bmi, DIB_RGB_COLORS, &lp, NULL, 0);
+
+}
+
+//ファイル出力用
+HBITMAP CreateBackbuffer2(int nWidth, int nHeight)
+{
+	LPVOID           lp;
+	BITMAPINFO       bmi;
+	BITMAPINFOHEADER bmiHeader;
+
+	ZeroMemory(&bmiHeader, sizeof(BITMAPINFOHEADER));
+	bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bmiHeader.biWidth = nWidth;
+	bmiHeader.biHeight = nHeight;
+	bmiHeader.biPlanes = 1;
+	bmiHeader.biBitCount = 24;
 
 	bmi.bmiHeader = bmiHeader;
 
