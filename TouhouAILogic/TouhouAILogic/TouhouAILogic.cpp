@@ -14,6 +14,12 @@ System::String^ TouhouAILogic::MainProc::Test(System::IntPtr hw)
 	return "te22277777st";
 }
 
+void TouhouAILogic::MainProc::Mach()
+{
+	ImageRecognition aa;
+	aa.TemplateMatch();
+}
+
 void TouhouAILogic::MainProc::Up()
 {
 	KeyManage::Instance().SendUp();

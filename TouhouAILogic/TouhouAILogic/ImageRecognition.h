@@ -5,6 +5,7 @@ namespace TouhouAILogic {
 	{
 	public:
 		void test(System::IntPtr);
+		void TemplateMatch();
 	};
 
 }

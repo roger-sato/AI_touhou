@@ -96,6 +96,10 @@ namespace TouhouAIUI
             //Test.Content = main_proc.Test(p.MainWindowHandle);
             Test.Content = main_proc.Test(Process.GetProcessesByName("th15")[0].MainWindowHandle);
         }
-   
+
+        private void mach_Click(object sender, RoutedEventArgs e)
+        {
+            main_proc.Mach();
+        }
     }
 }

@@ -35,7 +35,6 @@ void WindowPrint::Print(System::IntPtr hw)
 	
 	GetObject(hbmp, sizeof(BITMAP), &bm);
 	
-	
 	WriteBitmap(TEXT("capture.bmp"), rc.right, rc.bottom, bm.bmBits);
 
 	SelectObject(hdc, hbmpPrev);

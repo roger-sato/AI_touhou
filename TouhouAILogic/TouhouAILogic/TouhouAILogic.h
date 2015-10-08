@@ -8,6 +8,7 @@ namespace TouhouAILogic {
 		// TODO: このクラスの、ユーザーのメソッドをここに追加してください。
 	public:
 		System::String^ Test(System::IntPtr);
+		void Mach();
 		void Up();
 		void Down();
 		void Right();
