@@ -7,11 +7,14 @@
 #include "Debug.h"
 
 #include <fstream>
+#include <sstream>
 
 BOOL WriteBitmap(LPTSTR lpszFileName, int nWidth, int nHeight, LPVOID lpBits);
 HBITMAP CreateBackbuffer(int nWidth, int nHeight);
 HBITMAP CreateBackbuffer2(int nWidth, int nHeight);
 BITMAPINFOHEADER MakeBITINFO(int nWidth, int nHeight, LPVOID lpBits);
+
+using namespace TouhouAILogic;
 
 void WindowPrint::Print(System::IntPtr hw)
 {
@@ -35,7 +38,14 @@ void WindowPrint::Print(System::IntPtr hw)
 	
 	GetObject(hbmp, sizeof(BITMAP), &bm);
 	
-	WriteBitmap(TEXT("capture.bmp"), rc.right, rc.bottom, bm.bmBits);
+	std::stringstream ss;
+
+	ss << num;
+	num++;
+
+	std::string filename = "capture" + ss.str() + ".bmp";
+
+	WriteBitmap((LPTSTR)filename.c_str(), rc.right, rc.bottom, bm.bmBits);
 
 	SelectObject(hdc, hbmpPrev);
 	DeleteObject(hbmp);

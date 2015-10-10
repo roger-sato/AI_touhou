@@ -22,6 +22,7 @@ namespace TouhouAIUI
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void SendKeyPre()

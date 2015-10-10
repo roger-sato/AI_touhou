@@ -1,5 +1,6 @@
 // TouhouAILogic.h
 #pragma once
+#include "PrintWindow.h"
 
 namespace TouhouAILogic {
 
@@ -7,6 +8,7 @@ namespace TouhouAILogic {
 	{
 		// TODO: このクラスの、ユーザーのメソッドをここに追加してください。
 	public:
+		WindowPrint aaa;
 		System::String^ Test(System::IntPtr);
 		void Mach();
 		void Up();
