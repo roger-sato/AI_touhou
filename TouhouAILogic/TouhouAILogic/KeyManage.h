@@ -1,11 +1,15 @@
 #pragma once
 
-using namespace System;
+#include <Windows.h>
 
 namespace TouhouAILogic {
 
 	public class KeyManage
 	{
+		INPUT input;
+
+		void KeyOn(short keycode);
+		void KeyOff(short keycode);
 
 	public:
 		static KeyManage& Instance()
@@ -19,6 +23,15 @@ namespace TouhouAILogic {
 		void SendRight();
 		void SendLeft();
 		void SendEnter();
+
+		void OnUp();
+		void OffUp();
+		void OnRight();
+		void OffRight();
+		void OnLeft();
+		void OffLeft();
+		void OnDown();
+		void OffDown();
 
 	private:
 		KeyManage() {}

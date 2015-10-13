@@ -2,7 +2,7 @@
 
 #include <windows.h>
 #include "KeyManage.h"
-#
+
 
 /*
 const int INPUT_MOUSE = 0;                  // マウスイベント
@@ -85,4 +85,69 @@ void TouhouAILogic::KeyManage::SendLeft()
 void TouhouAILogic::KeyManage::SendEnter()
 {
 	SendKey(VK_RETURN);
+}
+
+void TouhouAILogic::KeyManage::KeyOn(short keycode)
+{
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = keycode;
+	input.ki.wScan = (short)MapVirtualKey(input.ki.wVk, 0);
+	input.ki.dwFlags = KEYEVENTF_SCANCODE;
+	input.ki.dwExtraInfo = GetMessageExtraInfo();
+	input.ki.time = 0;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void TouhouAILogic::KeyManage::KeyOff(short keycode)
+{
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = keycode;
+	input.ki.wScan = (short)MapVirtualKey(input.ki.wVk, 0);
+	input.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+	input.ki.dwExtraInfo = GetMessageExtraInfo();
+	input.ki.time = 0;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+
+void TouhouAILogic::KeyManage::OnUp()
+{
+	KeyOn(VK_UP);
+}
+
+void TouhouAILogic::KeyManage::OffUp()
+{
+	KeyOff(VK_UP);
+}
+
+void TouhouAILogic::KeyManage::OnRight()
+{
+	KeyOn(VK_RIGHT);
+}
+
+void TouhouAILogic::KeyManage::OffRight()
+{
+	KeyOff(VK_RIGHT);
+}
+
+void TouhouAILogic::KeyManage::OnLeft()
+{
+	KeyOn(VK_LEFT);
+}
+
+void TouhouAILogic::KeyManage::OffLeft()
+{
+	KeyOff(VK_LEFT);
+}
+
+void TouhouAILogic::KeyManage::OnDown()
+{
+	KeyOn(VK_DOWN);
+}
+
+void TouhouAILogic::KeyManage::OffDown()
+{
+	KeyOff(VK_DOWN);
 }
