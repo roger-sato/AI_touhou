@@ -1,7 +1,6 @@
 #include "Stdafx.h"
 #include "SendMove.h"
 #include "KeyManage.h"
-#include "Debug.h"
 
 enum MoSt {
 	UP = 0, RIGHT, LEFT, DOWN, NOWN
@@ -13,9 +12,7 @@ TouhouAILogic::SendMove::SendMove()
 }
 
 void TouhouAILogic::SendMove::MovePlayer(Vec2D dif)
-{
-	debug_out << "a" << std::endl;
-	
+{	
 	if (dif.Y() < 0) {
 		if (!MoveState[MoSt::UP]) {
 			KeyManage::Instance().OnUp();

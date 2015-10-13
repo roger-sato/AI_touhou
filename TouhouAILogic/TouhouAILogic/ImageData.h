@@ -7,7 +7,9 @@
 namespace TouhouAILogic {
 
 	public class ImageData{
-		std::map<std::string, cv::Mat> image_data;
+		std::map<std::string, cv::Mat> enemy_data;
+		std::map<std::string, cv::Mat> bullet_data;
+		std::map<std::string, cv::Mat> player_data;
 
 	public:
 		static ImageData& Instance()
@@ -17,11 +19,11 @@ namespace TouhouAILogic {
 		}
 
 		void Init();
-		cv::Mat Image(std::string file);
-		std::map<std::string, cv::Mat> ImageMap();
+		cv::Mat Image(std::string type,std::string file);
+		std::map<std::string, cv::Mat> ImageMap(std::string type);
 
 	private:
-		void AddImage(std::string,std::string);
+		void AddImage(std::string type,std::string,std::string);
 
 		ImageData() {}
 		ImageData(const ImageData &other) {}

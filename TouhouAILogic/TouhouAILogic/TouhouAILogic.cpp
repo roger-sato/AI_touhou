@@ -30,7 +30,7 @@ void TouhouAILogic::MainProc::Init(System::IntPtr hw)
 void TouhouAILogic::MainProc::Mach()
 {
 	ImageRecognition aa;
-	aa.TemplateMatch();
+	aa.test();
 }
 
 void TouhouAILogic::MainProc::Up()

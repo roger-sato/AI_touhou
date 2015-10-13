@@ -12,76 +12,101 @@
 #include "SendMove.h"
 #include "Vec2D.h"
 
+void TemplateMatch(const std::vector<cv::Mat>& planes, std::pair<std::string, cv::Mat> xy, cv::Mat& result);
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Point>& maxpt);
+
+
 void TouhouAILogic::ImageRecognition::test()
 {
 	WindowPrint wp;
 	
 	cv::Mat img = wp.HBITMAPToMat();
 	
-	std::map<std::string, cv::Mat> image = ImageData::Instance().ImageMap();
+	std::map<std::string, cv::Mat> bullet_image = ImageData::Instance().ImageMap("bullet");
+	std::map<std::string, cv::Mat> enemy_image = ImageData::Instance().ImageMap("enemy");
+	std::map<std::string, cv::Mat> player_image = ImageData::Instance().ImageMap("player");
 
 	std::vector<cv::Mat> planes;
 
 	cv::split(img, planes);
-	/*
-
-	for (auto xy : image) {
+	
+	for (auto xy : bullet_image) {
 		cv::Mat result;
-
-		if (xy.first[xy.first.size() - 1] == 'R') {
-			cv::matchTemplate(planes[2], xy.second, result, cv::TM_CCOEFF_NORMED);
-		}
-		else if (xy.first[xy.first.size() - 1] == 'G') {
-			cv::matchTemplate(planes[1], xy.second, result, cv::TM_CCOEFF_NORMED);
-		}
-
-		else if (xy.first[xy.first.size() - 1] == 'B') {
-			cv::matchTemplate(planes[0], xy.second, result, cv::TM_CCOEFF_NORMED);
-		}
+		TemplateMatch(planes, xy, result);
 		
-		std::vector<cv::Point> maxpt;
+		SearchMatch(result, 0.65f, bullet_maxpt);
 
-		float threshold = 0.65f;
-		for (int y = 0; y < result.rows; ++y) {
-			for (int x = 0; x < result.cols; ++x) {
-				if (result.at<float>(y, x) > threshold) {
-					maxpt.emplace_back(x, y);
-				}
-			}
-		}
-		for (auto x : maxpt) {
+		for (auto x : bullet_maxpt) {
 			cv::rectangle(img, x, cv::Point(x.x + xy.second.cols, x.y + xy.second.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
 		}
-
 	}
-	*/
 
-	Vec2D a(0, 1);
-	SendMove b;
-	b.MovePlayer(a);
-	
+	for (auto xy : enemy_image) {
+		cv::Mat result;
+		TemplateMatch(planes, xy, result);
+
+		SearchMatch(result, 0.65f, enemy_maxpt);
+
+		for (auto x : enemy_maxpt) {
+			cv::rectangle(img, x, cv::Point(x.x + xy.second.cols, x.y + xy.second.rows), cv::Scalar(0, 0, 255), 2, 8, 0);
+		}
+	}
+
+	for (auto xy : player_image) {
+		cv::Mat result;
+		TemplateMatch(planes, xy, result);
+
+		SearchMatch(result, 0.65f, player_maxpt);
+
+		for (auto x : player_maxpt) {
+			cv::rectangle(img, x, cv::Point(x.x + xy.second.cols, x.y + xy.second.rows), cv::Scalar(255, 0, 0), 2, 8, 0);
+		}
+	}
+
 	cv::imshow("matching", img);
 }
 
-void TouhouAILogic::ImageRecognition::TemplateMatch()
+
+std::vector<cv::Point> TouhouAILogic::ImageRecognition::Mach()
 {
-	/*
-	cv::Mat img = cv::imread("capture.bmp");
-	cv::Mat img2 = cv::imread("capture2.png");
-	
-	std::vector<cv::Mat> planes;
-	std::vector<cv::Mat> planes2;
-
-	cv::split(img, planes);
-	cv::split(img2, planes2);
 
 
-	cv::Mat result;
-	cv::matchTemplate(planes[2], planes2[2], result, cv::TM_CCOEFF_NORMED);
+	return std::vector<cv::Point>();
+}
 
-	std::vector<cv::Point> maxpt;
+std::vector<cv::Point> TouhouAILogic::ImageRecognition::PlayerPoint()
+{
+	return player_maxpt;
+}
 
-	float threshold = 0.55f;
+std::vector<cv::Point> TouhouAILogic::ImageRecognition::EnemyPoint()
+{
+	return enemy_maxpt;
+}
+
+std::vector<cv::Point> TouhouAILogic::ImageRecognition::BulletPoint()
+{
+	return bullet_maxpt;
+}
+
+
+
+void TemplateMatch(const std::vector<cv::Mat>& planes ,  std::pair<std::string,cv::Mat> xy, cv::Mat& result)
+{
+	if (xy.first[xy.first.size() - 1] == 'R') {
+		cv::matchTemplate(planes[2], xy.second, result, cv::TM_CCOEFF_NORMED);
+	}
+	else if (xy.first[xy.first.size() - 1] == 'G') {
+		cv::matchTemplate(planes[1], xy.second, result, cv::TM_CCOEFF_NORMED);
+	}
+
+	else if (xy.first[xy.first.size() - 1] == 'B') {
+		cv::matchTemplate(planes[0], xy.second, result, cv::TM_CCOEFF_NORMED);
+	}
+}
+
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Point>& maxpt)
+{
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
@@ -89,24 +114,4 @@ void TouhouAILogic::ImageRecognition::TemplateMatch()
 			}
 		}
 	}
-
-	for (auto x : maxpt) {
-		cv::rectangle(img, x, cv::Point(x.x + img2.cols, x.y + img2.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
-	}
-
-	cv::imshow("matching", img);
-	cv::imshow("result", result);
-	cv::waitKey(0);
-	cv::destroyAllWindows();
-	*/
-
-	cv::waitKey(0);
-	cv::destroyAllWindows();
-}
-
-std::vector<cv::Point> TouhouAILogic::ImageRecognition::Mach()
-{
-
-
-	return std::vector<cv::Point>();
 }
