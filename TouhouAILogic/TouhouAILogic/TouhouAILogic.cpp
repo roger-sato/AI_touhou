@@ -5,12 +5,27 @@
 #include "TouhouAILogic.h"
 #include "KeyManage.h"
 #include "ImageRecognition.h"
+#include "SystemData.h"
+#include "ImageData.h"
 
-System::String^ TouhouAILogic::MainProc::Test(System::IntPtr hw)
+static long long time = 0;
+static TouhouAILogic::ImageRecognition ir;
+
+System::String^ TouhouAILogic::MainProc::Test()
 {
-	aaa.Print(hw);
+	
+	ImageRecognition ir;
+	ir.test();
+	
 	return "te22277777st";
 }
+
+void TouhouAILogic::MainProc::Init(System::IntPtr hw)
+{
+	SystemData::Instance().SetWindowHandle(hw);
+	ImageData::Instance().Init();
+}
+
 
 void TouhouAILogic::MainProc::Mach()
 {

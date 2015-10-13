@@ -7,91 +7,98 @@
 #include "ImageRecognition.h"
 #include "PrintWindow.h"
 #include <vector>
+#include "ImageData.h"
+#include "Debug.h"
 
-
-void TouhouAILogic::ImageRecognition::test(System::IntPtr hw)
+void TouhouAILogic::ImageRecognition::test()
 {
 	WindowPrint wp;
-	//wp.Print(hw);
+	
+	cv::Mat img = wp.HBITMAPToMat();
+	
+	std::map<std::string, cv::Mat> image = ImageData::Instance().ImageMap();
 
-	cv::Mat img = wp.HBITMAPToMat(hw);
+	std::vector<cv::Mat> planes;
+
+	cv::split(img, planes);
+	/*
+	for (auto xy : image) {
+		cv::Mat result;
+
+		if (xy.first[xy.first.size() - 1] == 'R') {
+			cv::matchTemplate(planes[2], xy.second, result, cv::TM_CCOEFF_NORMED);
+		}
+		else if (xy.first[xy.first.size() - 1] == 'G') {
+			cv::matchTemplate(planes[1], xy.second, result, cv::TM_CCOEFF_NORMED);
+		}
+
+		else if (xy.first[xy.first.size() - 1] == 'B') {
+			cv::matchTemplate(planes[0], xy.second, result, cv::TM_CCOEFF_NORMED);
+		}
+		
+		std::vector<cv::Point> maxpt;
+
+		float threshold = 0.65f;
+		for (int y = 0; y < result.rows; ++y) {
+			for (int x = 0; x < result.cols; ++x) {
+				if (result.at<float>(y, x) > threshold) {
+					maxpt.emplace_back(x, y);
+				}
+			}
+		}
+		for (auto x : maxpt) {
+			cv::rectangle(img, x, cv::Point(x.x + xy.second.cols, x.y + xy.second.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
+		}
+
+	}*/
+
+	cv::imshow("matching", img);
 }
 
 void TouhouAILogic::ImageRecognition::TemplateMatch()
 {
-	//cv::Mat temp_img = cv::imread("capture3.bmp",cv::IMREAD_GRAYSCALE);
-	cv::Mat img = cv::imread("capture.bmp");
-	cv::Mat img2 = cv::imread("capture2.bmp");
-
-
 	/*
-	cv::Mat bin_img2;
-	cv::cvtColor(img2, bin_img2, CV_BGR2GRAY);
-	cv::Mat result;
-	cv::matchTemplate(img2,temp_img,result, cv::TM_CCORR_NORMED);
-
+	cv::Mat img = cv::imread("capture.bmp");
+	cv::Mat img2 = cv::imread("capture2.png");
 	
+	std::vector<cv::Mat> planes;
+	std::vector<cv::Mat> planes2;
+
+	cv::split(img, planes);
+	cv::split(img2, planes2);
+
+
+	cv::Mat result;
+	cv::matchTemplate(planes[2], planes2[2], result, cv::TM_CCOEFF_NORMED);
+
 	std::vector<cv::Point> maxpt;
-	float threshold = 0.95f;
+
+	float threshold = 0.55f;
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
-				maxpt.emplace_back(x,y);
+				maxpt.emplace_back(x, y);
 			}
 		}
 	}
-	
+
 	for (auto x : maxpt) {
-		cv::rectangle(img2, x, cv::Point(x.x + temp_img.cols, x.y + temp_img.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
+		cv::rectangle(img, x, cv::Point(x.x + img2.cols, x.y + img2.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
 	}
-	
 
-	cv::imshow("matching", img2);
+	cv::imshow("matching", img);
+	cv::imshow("result", result);
 	cv::waitKey(0);
 	cv::destroyAllWindows();
 	*/
 
-
-
-	
-	cv::initModule_nonfree();
-	cv::Ptr<cv::FeatureDetector> detector = cv::FeatureDetector::create("SURF");
-	std::vector<cv::KeyPoint> keypoint, keypoint2;
-
-	detector->detect(img, keypoint);
-	detector->detect(img2, keypoint2);
-	
-
-	cv::Ptr<cv::DescriptorExtractor> extractor = cv::DescriptorExtractor::create("SURF");
-	cv::Mat descriptor1, descriptor2;
-	extractor->compute(img, keypoint, descriptor1);
-	extractor->compute(img2, keypoint2, descriptor2);
-
-	// マッチング
-	cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create("BruteForce-SL2");
-	std::vector<cv::DMatch> dmatch;
-	matcher->match(descriptor1, descriptor2, dmatch);
-
-	/*
-	std::vector<cv::DMatch> match12, match21;
-	matcher->match(descriptor1, descriptor2, match12);
-	matcher->match(descriptor2, descriptor1, match21);
-	for (size_t i = 0; i < match12.size(); i++)
-	{
-	cv::DMatch forward = match12[i];
-	cv::DMatch backward = match21[forward.trainIdx];
-	if (backward.trainIdx == forward.queryIdx)
-	dmatch.push_back(forward);
-	}
-	*/
-
-	// マッチング結果の表示
-
-
-	cv::Mat out;
-	cv::drawMatches(img, keypoint, img2, keypoint2, dmatch, out);
-	cv::imshow("matching", out);
 	cv::waitKey(0);
 	cv::destroyAllWindows();
-	
+}
+
+std::vector<cv::Point> TouhouAILogic::ImageRecognition::Mach()
+{
+
+
+	return std::vector<cv::Point>();
 }

@@ -7,8 +7,8 @@ namespace TouhouAILogic {
 	public ref class  WindowPrint {
 		int num = 0;
 	public:
-		void Print(System::IntPtr);
-		cv::Mat HBITMAPToMat(System::IntPtr hw);
+		void Print();
+		cv::Mat HBITMAPToMat();
 	};
 
 }

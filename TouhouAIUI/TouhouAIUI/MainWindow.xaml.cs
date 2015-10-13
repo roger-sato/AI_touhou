@@ -22,7 +22,6 @@ namespace TouhouAIUI
         public MainWindow()
         {
             InitializeComponent();
-            
         }
 
         private void SendKeyPre()
@@ -95,12 +94,28 @@ namespace TouhouAIUI
         {
             // SendKeyPre();
             //Test.Content = main_proc.Test(p.MainWindowHandle);
-            Test.Content = main_proc.Test(Process.GetProcessesByName("th15")[0].MainWindowHandle);
+            Timer timer = new Timer();
+
+            timer.Tick += new EventHandler(MyProc);
+            timer.Interval = 30;
+            timer.Start();
+
+        }
+
+        private void MyProc(object sender, EventArgs e)
+        {
+            main_proc.Test();
         }
 
         private void mach_Click(object sender, RoutedEventArgs e)
         {
-            main_proc.Mach();
+            //main_proc.Mach();
+            main_proc.Test();
+        }
+
+        private void Init_Click(object sender, RoutedEventArgs e)
+        {
+            main_proc.Init(Process.GetProcessesByName("th15")[0].MainWindowHandle);
         }
     }
 }

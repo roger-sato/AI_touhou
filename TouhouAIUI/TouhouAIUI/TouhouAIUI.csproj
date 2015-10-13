@@ -65,8 +65,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TouhouAILogic, Version=1.0.5755.31060, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="TouhouAILogic">
       <HintPath>..\..\TouhouAILogic\Release\TouhouAILogic.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />

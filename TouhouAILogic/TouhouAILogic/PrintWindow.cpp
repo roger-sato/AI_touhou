@@ -4,10 +4,9 @@
 #include <opencv2\highgui\highgui.hpp>
 #include <opencv2\core\core.hpp>
 #include <string>
-#include "Debug.h"
-
 #include <fstream>
 #include <sstream>
+#include "SystemData.h"
 
 BOOL WriteBitmap(LPTSTR lpszFileName, int nWidth, int nHeight, LPVOID lpBits);
 HBITMAP CreateBackbuffer(int nWidth, int nHeight);
@@ -16,10 +15,10 @@ BITMAPINFOHEADER MakeBITINFO(int nWidth, int nHeight, LPVOID lpBits);
 
 using namespace TouhouAILogic;
 
-void WindowPrint::Print(System::IntPtr hw)
+void WindowPrint::Print()
 {
 	HDC hdc;
-	HWND hwnd = static_cast< HWND >(hw.ToPointer());
+	HWND hwnd = static_cast< HWND >(SystemData::Instance().GetWindowHandle().ToPointer());
 	//HWND hwnd = GetDesktopWindow();
 	RECT rc;
 	BITMAP bm;
@@ -27,8 +26,6 @@ void WindowPrint::Print(System::IntPtr hw)
 	HBITMAP hbmpPrev;
 
 	GetClientRect(hwnd,&rc);
-
-	debug_out << rc.right << std::endl << rc.bottom << std::endl;
 
 	hdc = CreateCompatibleDC(NULL);
 	hbmp = CreateBackbuffer2(rc.right,rc.bottom);
@@ -162,11 +159,11 @@ HBITMAP CreateBackbuffer2(int nWidth, int nHeight)
 
 }
 
-cv::Mat WindowPrint::HBITMAPToMat(System::IntPtr hw)
+cv::Mat WindowPrint::HBITMAPToMat()
 {
 
 	HDC hdc;
-	HWND hwnd = static_cast< HWND >(hw.ToPointer());
+	HWND hwnd = static_cast< HWND >(SystemData::Instance().GetWindowHandle().ToPointer());
 	//HWND hwnd = GetDesktopWindow();
 	RECT rc;
 	BITMAP bm;
@@ -190,9 +187,12 @@ cv::Mat WindowPrint::HBITMAPToMat(System::IntPtr hw)
 
 	GetDIBits(hdc, hbmp, 0, bm.bmHeight, image.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
 
+	cv::Rect roi_rect(65,55,772,900);
+	cv::Mat image_roi = image(roi_rect);
+
 	SelectObject(hdc, hbmpPrev);
 	DeleteObject(hbmp);
 	DeleteDC(hdc);
 
-	return image;
+	return image_roi;
 }
