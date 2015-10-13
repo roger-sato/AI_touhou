@@ -8,8 +8,10 @@ namespace TouhouAILogic {
 		int x, y;
 
 	public:
-		int X();
-		int Y();
+		Vec2D(int,int);
+
+		int X()const;
+		int Y()const;
 		int ToLength(Vec2D);
 		void Set(Vec2D);
 		void Set(int x, int y);

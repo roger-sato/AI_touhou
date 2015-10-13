@@ -5,3 +5,4 @@
 !TouhouAIUI/*/*
 !TouhouAIUI/*/*/*
 !.gitignore
+!TouhouAIUI/TouhouAIUI/bin/Release/template

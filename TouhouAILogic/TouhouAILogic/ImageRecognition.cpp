@@ -8,7 +8,9 @@
 #include "PrintWindow.h"
 #include <vector>
 #include "ImageData.h"
-#include "Debug.h"
+
+#include "SendMove.h"
+#include "Vec2D.h"
 
 void TouhouAILogic::ImageRecognition::test()
 {
@@ -22,6 +24,7 @@ void TouhouAILogic::ImageRecognition::test()
 
 	cv::split(img, planes);
 	/*
+
 	for (auto xy : image) {
 		cv::Mat result;
 
@@ -50,8 +53,13 @@ void TouhouAILogic::ImageRecognition::test()
 			cv::rectangle(img, x, cv::Point(x.x + xy.second.cols, x.y + xy.second.rows), cv::Scalar(0, 255, 255), 2, 8, 0);
 		}
 
-	}*/
+	}
+	*/
 
+	Vec2D a(0, 1);
+	SendMove b;
+	b.MovePlayer(a);
+	
 	cv::imshow("matching", img);
 }
 

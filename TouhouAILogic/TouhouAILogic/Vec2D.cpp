@@ -2,12 +2,18 @@
 #include "Vec2D.h"
 #include <math.h>
 
-int TouhouAILogic::Vec2D::X()
+TouhouAILogic::Vec2D::Vec2D(int _x, int _y)
+{
+	x = _x;
+	y = _y;
+}
+
+int TouhouAILogic::Vec2D::X()const
 {
 	return x;
 }
 
-int TouhouAILogic::Vec2D::Y()
+int TouhouAILogic::Vec2D::Y()const
 {
 	return y;
 }
@@ -26,7 +32,7 @@ void TouhouAILogic::Vec2D::Set(Vec2D p)
 void TouhouAILogic::Vec2D::Set(int _x, int _y)
 {
 	x = _x;
-	y - _y;
+	y = _y;
 }
 
 void TouhouAILogic::Vec2D::Set(cv::Rect p)
