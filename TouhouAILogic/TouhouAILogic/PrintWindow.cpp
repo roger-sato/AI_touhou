@@ -40,7 +40,7 @@ void WindowPrint::Print()
 	ss << num;
 	num++;
 
-	std::string filename = "capture" + ss.str() + ".bmp";
+	std::string filename = "./ScreenShot/capture" + ss.str() + ".bmp";
 
 	WriteBitmap((LPTSTR)filename.c_str(), rc.right, rc.bottom, bm.bmBits);
 

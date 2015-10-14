@@ -10,6 +10,7 @@ namespace TouhouAILogic {
 		Vec2D point;
 		SendMove move;
 	public:
+		Player() {}
 		Vec2D Point();
 		void Move(Vec2D);
 		void InputPoint(std::vector<cv::Point>);

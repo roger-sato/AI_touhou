@@ -10,7 +10,7 @@ namespace TouhouAILogic {
 	public:
 		System::String^ Test();
 		void Init(System::IntPtr);
-		void Mach();
+		void ScreenShot();
 		void Up();
 		void Down();
 		void Right();

@@ -9,6 +9,8 @@ namespace TouhouAILogic {
 
 	public:
 		Vec2D(int,int);
+		Vec2D(cv::Point);
+		Vec2D() {}
 
 		int X()const;
 		int Y()const;

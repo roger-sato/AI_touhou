@@ -11,7 +11,7 @@ namespace TouhouAILogic {
 		std::vector<cv::Point> bullet_maxpt;
 	public:
 		void test();
-		std::vector<cv::Point> Mach();
+		void ScreenShot();
 
 		std::vector<cv::Point> PlayerPoint();
 		std::vector<cv::Point> EnemyPoint();

@@ -8,7 +8,7 @@
         ResizeMode="NoResize"
         Title="MainWindow" Height="400.064" Width="285.461">
     <Grid>
-        <Button x:Name="button" Content="起動" HorizontalAlignment="Left" Margin="38,34,0,0" VerticalAlignment="Top" Width="200" Height="75"
+        <Button x:Name="button" Content="起動" HorizontalAlignment="Left" Margin="38,34,0,0" VerticalAlignment="Top" Width="121" Height="75"
                 Click="button_Click"/>
         <Button x:Name="button1" Content="ファイル参照" HorizontalAlignment="Left" Margin="123,131,0,0" VerticalAlignment="Top" Width="132" Height="54"
                 Click="button1_Click"/>
@@ -21,6 +21,7 @@
         <Button x:Name="Test" Content="Test" HorizontalAlignment="Left" Margin="25,243,0,0" VerticalAlignment="Top" Width="75" Click="Test_Click"/>
         <Button x:Name="mach" Content="mach" HorizontalAlignment="Left" Margin="160,243,0,0" VerticalAlignment="Top" Width="75" Click="mach_Click"/>
         <Button x:Name="Init" Content="Init" HorizontalAlignment="Left" Margin="160,197,0,0" VerticalAlignment="Top" Width="75" Click="Init_Click"/>
+        <Button x:Name="ScreenShot" Content="ScreenShot" HorizontalAlignment="Left" Margin="180,34,0,0" VerticalAlignment="Top" Width="75" Height="75" Click="ScreenShot_Click"/>
 
     </Grid>
 </Window>

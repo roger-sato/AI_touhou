@@ -36,6 +36,19 @@ void TouhouAILogic::SendMove::MovePlayer(Vec2D dif)
 		}
 	}
 	
+	else {
+		if (MoveState[MoSt::UP]) {
+			KeyManage::Instance().OffUp();
+			MoveState[MoSt::UP] = false;
+		}
+
+		if (MoveState[MoSt::DOWN]) {
+			KeyManage::Instance().OffDown();
+			MoveState[MoSt::DOWN] = false;
+		}
+	}
+	
+	
 	
 	if (dif.X() < 0) {
 		if (!MoveState[MoSt::LEFT]) {
@@ -58,5 +71,18 @@ void TouhouAILogic::SendMove::MovePlayer(Vec2D dif)
 			MoveState[MoSt::LEFT] = false;
 		}
 	}
+	
+	else {
+		if (MoveState[MoSt::LEFT]) {
+			KeyManage::Instance().OffLeft();
+			MoveState[MoSt::LEFT] = false;
+		}
+
+		if (MoveState[MoSt::RIGHT]) {
+			KeyManage::Instance().OffRight();
+			MoveState[MoSt::RIGHT] = false;
+		}
+	}
+	
 	
 }

@@ -97,7 +97,7 @@ namespace TouhouAIUI
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(MyProc);
-            timer.Interval = 100;
+            timer.Interval = 150;
             timer.Start();
 
         }
@@ -117,5 +117,20 @@ namespace TouhouAIUI
         {
             main_proc.Init(Process.GetProcessesByName("th15")[0].MainWindowHandle);
         }
+
+        private void ScreenShot_Click(object sender, RoutedEventArgs e)
+        {
+            Timer timer = new Timer();
+
+            timer.Tick += new EventHandler(ScreenShot_event);
+            timer.Interval = 150;
+            timer.Start();
+        }
+
+        private void ScreenShot_event(object sender, EventArgs e)
+        {
+            main_proc.ScreenShot();
+        }
+
     }
 }

@@ -67,11 +67,10 @@ void TouhouAILogic::ImageRecognition::test()
 }
 
 
-std::vector<cv::Point> TouhouAILogic::ImageRecognition::Mach()
+TouhouAILogic::WindowPrint screen_shot;
+void TouhouAILogic::ImageRecognition::ScreenShot()
 {
-
-
-	return std::vector<cv::Point>();
+	screen_shot.Print();
 }
 
 std::vector<cv::Point> TouhouAILogic::ImageRecognition::PlayerPoint()

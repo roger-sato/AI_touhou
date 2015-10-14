@@ -8,6 +8,12 @@ TouhouAILogic::Vec2D::Vec2D(int _x, int _y)
 	y = _y;
 }
 
+TouhouAILogic::Vec2D::Vec2D(cv::Point p)
+{
+	x = p.x;
+	y = p.y;
+}
+
 int TouhouAILogic::Vec2D::X()const
 {
 	return x;

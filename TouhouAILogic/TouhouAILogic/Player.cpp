@@ -28,7 +28,7 @@ void TouhouAILogic::Player::InputPoint(std::vector<cv::Point> input)
 		max_x = std::max(in.x, max_x);
 		max_y = std::max(in.y, max_y);
 		min_x = std::min(in.x, min_x);
-		min_y = std::min(in.x, min_y);
+		min_y = std::min(in.y, min_y);
 	}
 	point.Set((max_x+min_x)/2, (max_y + min_y) / 2);
 }

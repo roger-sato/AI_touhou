@@ -7,15 +7,15 @@
 #include "ImageRecognition.h"
 #include "SystemData.h"
 #include "ImageData.h"
+#include "ControlManager.h"
 
-static long long time = 0;
-static TouhouAILogic::ImageRecognition ir;
+static TouhouAILogic::ControlManager cm;
+TouhouAILogic::ImageRecognition screen_shot;
 
 System::String^ TouhouAILogic::MainProc::Test()
 {
-	
-	ImageRecognition ir;
-	ir.test();
+	TouhouAILogic::ControlManager cm;
+	cm.Proc();
 	
 	return "te22277777st";
 }
@@ -27,10 +27,9 @@ void TouhouAILogic::MainProc::Init(System::IntPtr hw)
 }
 
 
-void TouhouAILogic::MainProc::Mach()
+void TouhouAILogic::MainProc::ScreenShot()
 {
-	ImageRecognition aa;
-	aa.test();
+	screen_shot.ScreenShot();
 }
 
 void TouhouAILogic::MainProc::Up()
