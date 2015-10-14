@@ -8,7 +8,7 @@ namespace TouhouAILogic {
 		int num = 0;
 	public:
 		void Print();
-		cv::Mat HBITMAPToMat();
+		void HBITMAPToMat(cv::Mat& ret_image);
 	};
 
 }

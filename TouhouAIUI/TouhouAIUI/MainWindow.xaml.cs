@@ -92,12 +92,10 @@ namespace TouhouAIUI
         
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            // SendKeyPre();
-            //Test.Content = main_proc.Test(p.MainWindowHandle);
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(MyProc);
-            timer.Interval = 150;
+            timer.Interval = 30;
             timer.Start();
 
         }

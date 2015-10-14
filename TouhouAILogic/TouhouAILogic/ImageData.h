@@ -20,7 +20,7 @@ namespace TouhouAILogic {
 
 		void Init();
 		cv::Mat Image(std::string type,std::string file);
-		std::map<std::string, cv::Mat> ImageMap(std::string type);
+		void ImageMap(std::string type, std::map<std::string, cv::Mat>& get_img);
 
 	private:
 		void AddImage(std::string type,std::string,std::string);

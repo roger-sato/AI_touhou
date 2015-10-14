@@ -12,11 +12,11 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("bullet","bullet_1" , "R");
 	AddImage("bullet","bullet_2" , "R");
 	AddImage("bullet","bullet_3" , "R");
+
 	AddImage("enemy","enemy_1" , "G");
 	AddImage("player","player_1" , "G");
 	AddImage("player","player_2", "G");
 	AddImage("player","player_3", "G");
-
 }
 
 
@@ -34,18 +34,17 @@ cv::Mat TouhouAILogic::ImageData::Image(std::string type,std::string file)
 	return cv::Mat();
 }
 
-std::map<std::string, cv::Mat> TouhouAILogic::ImageData::ImageMap(std::string type)
+void TouhouAILogic::ImageData::ImageMap(std::string type, std::map<std::string, cv::Mat>& get_img)
 {
 	if (type == "enemy") {
-		return enemy_data;
+		get_img = enemy_data;
 	}
 	else if (type == "bullet") {
-		return bullet_data;
+		get_img = bullet_data;
 	}
 	else if (type == "player") {
-		return player_data;
+		get_img = player_data;
 	}
-	return std::map<std::string, cv::Mat>();
 }
 
 void TouhouAILogic::ImageData::AddImage(std::string type,std::string name,std::string rgb)

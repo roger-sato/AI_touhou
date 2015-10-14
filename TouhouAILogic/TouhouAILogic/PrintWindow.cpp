@@ -159,7 +159,7 @@ HBITMAP CreateBackbuffer2(int nWidth, int nHeight)
 
 }
 
-cv::Mat WindowPrint::HBITMAPToMat()
+void WindowPrint::HBITMAPToMat(cv::Mat& ret_image)
 {
 
 	HDC hdc;
@@ -188,11 +188,9 @@ cv::Mat WindowPrint::HBITMAPToMat()
 	GetDIBits(hdc, hbmp, 0, bm.bmHeight, image.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
 
 	cv::Rect roi_rect(65,55,772,900);
-	cv::Mat image_roi = image(roi_rect);
+	ret_image = image(roi_rect);
 
 	SelectObject(hdc, hbmpPrev);
 	DeleteObject(hbmp);
 	DeleteDC(hdc);
-
-	return image_roi;
 }

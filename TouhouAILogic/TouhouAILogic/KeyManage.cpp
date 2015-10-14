@@ -114,40 +114,48 @@ void TouhouAILogic::KeyManage::KeyOff(short keycode)
 
 void TouhouAILogic::KeyManage::OnUp()
 {
+	Sleep(20);
 	KeyOn(VK_UP);
 }
 
 void TouhouAILogic::KeyManage::OffUp()
 {
+	Sleep(20);
 	KeyOff(VK_UP);
 }
 
 void TouhouAILogic::KeyManage::OnRight()
 {
+	Sleep(20);
 	KeyOn(VK_RIGHT);
 }
 
 void TouhouAILogic::KeyManage::OffRight()
 {
+	Sleep(20);
 	KeyOff(VK_RIGHT);
 }
 
 void TouhouAILogic::KeyManage::OnLeft()
 {
+	Sleep(20);
 	KeyOn(VK_LEFT);
 }
 
 void TouhouAILogic::KeyManage::OffLeft()
 {
+	Sleep(20);
 	KeyOff(VK_LEFT);
 }
 
 void TouhouAILogic::KeyManage::OnDown()
 {
+	Sleep(20);
 	KeyOn(VK_DOWN);
 }
 
 void TouhouAILogic::KeyManage::OffDown()
 {
+	Sleep(20);
 	KeyOff(VK_DOWN);
 }
