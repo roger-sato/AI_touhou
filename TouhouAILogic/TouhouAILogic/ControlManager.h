@@ -15,7 +15,12 @@ namespace TouhouAILogic {
 		void Proc();
 
 	private:
+		cv::Mat screen_image;
+		std::vector<cv::Mat> screen_planes;
+		void GetPrintScreenModule();
 		void PlayerModule();
+		void EnemyModule();
+		void BulletModule();
 	};
 
 }

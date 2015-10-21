@@ -4,7 +4,7 @@
 #include <opencv2\highgui\highgui.hpp>
 
 namespace TouhouAILogic {
-	public  class  WindowPrint {
+	public class  WindowPrint {
 		int num = 0;
 	public:
 		void Print();

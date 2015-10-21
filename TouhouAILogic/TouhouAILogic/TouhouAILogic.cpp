@@ -24,10 +24,9 @@ void TouhouAILogic::MainProc::Init(System::IntPtr hw)
 {
 	SystemData::Instance().SetWindowHandle(hw);
 	ImageData::Instance().Init();
-	/*
+
 	cv::Mat img = cv::imread("capture.bmp");
 	cv::imshow("matching", img);
-	*/
 }
 
 

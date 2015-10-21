@@ -13,8 +13,7 @@
 #include "Vec2D.h"
 
 void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<std::string, cv::Mat> xy, cv::Mat& result);
-void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Point>& maxpt , TouhouAILogic::Vec2D p);
-void DrawRectangle(cv::Mat& img, cv::Mat& temp_img, std::vector<cv::Point>& maxpt, cv::Scalar color);
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<std::string, cv::Mat> xy, TouhouAILogic::Vec2D p);
 
 void TouhouAILogic::ImageRecognition::Proc()
 {
@@ -46,11 +45,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 		
 		TemplateMatch(planes, xy, result);
-		/*
-		SearchMatch(result, 0.65f, player_maxpt , p);
-
-		DrawRectangle(img, xy.second, player_maxpt, cv::Scalar(0, 255, 0));
-		*/
+		SearchMatch(result, 0.65f, player_maxpt ,xy , p);
 	}
 }
 
@@ -65,9 +60,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.65f, bullet_maxpt , p);
-
-		DrawRectangle(img, xy.second, bullet_maxpt, cv::Scalar(0, 255, 255));
+		SearchMatch(result, 0.65f, bullet_maxpt ,xy , p);
 	}
 
 
@@ -84,9 +77,7 @@ void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::vector
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.65f, enemy_maxpt , p);
-
-		DrawRectangle(img, xy.second, enemy_maxpt, cv::Scalar(0, 0, 255));
+		SearchMatch(result, 0.65f, enemy_maxpt,xy , p);
 	}
 }
 
@@ -97,25 +88,25 @@ void TouhouAILogic::ImageRecognition::ScreenShot()
 	screen_shot.Print();
 }
 
-std::vector<cv::Point> TouhouAILogic::ImageRecognition::PlayerPoint()
+std::vector<cv::Rect> TouhouAILogic::ImageRecognition::PlayerRect()
 {
 	return player_maxpt;
 }
 
-std::vector<cv::Point> TouhouAILogic::ImageRecognition::EnemyPoint()
+std::vector<cv::Rect> TouhouAILogic::ImageRecognition::EnemyRect()
 {
 	return enemy_maxpt;
 }
 
-std::vector<cv::Point> TouhouAILogic::ImageRecognition::BulletPoint()
+std::vector<cv::Rect> TouhouAILogic::ImageRecognition::BulletRect()
 {
 	return bullet_maxpt;
 }
 
-void DrawRectangle(cv::Mat& img, cv::Mat& temp_img, std::vector<cv::Point>& maxpt , cv::Scalar color)
+void TouhouAILogic::ImageRecognition::DrawRectangle(cv::Mat& img, std::vector<cv::Rect>& maxpt , cv::Scalar color)
 {
 	for (auto x : maxpt) {
-		cv::rectangle(img, x, cv::Point(x.x + temp_img.cols, x.y + temp_img.rows), color, 2, 8, 0);
+		cv::rectangle(img, cv::Point(x.x,x.y), cv::Point(x.x + x.width, x.y + x.height), color, 2, 8, 0);
 	}
 }
 
@@ -133,12 +124,12 @@ void TemplateMatch(std::vector<cv::Mat>& planes ,  std::pair<std::string,cv::Mat
 	}
 }
 
-void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Point>& maxpt , TouhouAILogic::Vec2D p)
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt , std::pair<std::string, cv::Mat> xy ,  TouhouAILogic::Vec2D p)
 {
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
-				maxpt.emplace_back(x + p.X(), y + p.Y());
+				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.second.rows, xy.second.cols);
 			}
 		}
 	}

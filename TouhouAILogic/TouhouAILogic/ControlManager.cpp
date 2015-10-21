@@ -2,58 +2,33 @@
 #include "ControlManager.h"
 #include <random>
 
-std::random_device random;
-std::mt19937 mt(random());
+using namespace System::Threading;
 
 void TouhouAILogic::ControlManager::Proc()
 {
+	System::Console::Write("aaaaa");
+	Thread^ threadA = gcnew Thread(gcnew ThreadStart(PlayerModule));
+}
 
-	std::vector<cv::Point> bullet_p = recog.BulletPoint();
+void TouhouAILogic::ControlManager::GetPrintScreenModule()
+{
+	printer.HBITMAPToMat(screen_image);
 
-	Vec2D minp(0,0);
-	int minl = 999999;
-
-	PlayerModule();
-
-	/*
-	Vec2D player_p = player.Point();
-
-	for (auto bullet : bullet_p) {
-		Vec2D vec(bullet);
-
-		if (vec.ToLength(player_p) < minl) {
-			minp = vec;
-		}
-	}
-
-	if (!bullet_p.empty()) {
-		if (mt() % 10 == 0) {
-			Vec2D priority(-player_p.Y() + minp.Y(), -player_p.X() + minp.X());
-			player.Move(priority);
-		}
-		else {
-			Vec2D priority(player_p.Y() - minp.Y(), player_p.X() - minp.X());
-			player.Move(priority);
-		}
-	}
-	else {
-		player.Move(minp);
-	}
-	*/
+	cv::split(screen_image, screen_planes);
 }
 
 void TouhouAILogic::ControlManager::PlayerModule()
 {
-	cv::Mat img;
-	printer.HBITMAPToMat(img);
-
-	std::vector<cv::Mat> planes;
-
-	cv::split(img, planes);
-
-	recog.PlayerRecognition(img, planes , Vec2D(0, 0));
-
-	cv::imshow("matching", img);
-
-	player.InputPoint(recog.PlayerPoint());
+	recog.PlayerRecognition(screen_image, screen_planes , Vec2D(0, 0));
 }
+
+void TouhouAILogic::ControlManager::EnemyModule()
+{
+	recog.EnemyRecognition(screen_image, screen_planes, Vec2D(0, 0));
+}
+
+void TouhouAILogic::ControlManager::BulletModule()
+{
+	recog.BulletRecognition(screen_image, screen_planes, Vec2D(0, 0));
+}
+

@@ -12,11 +12,13 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("bullet","bullet_1" , "R");
 	AddImage("bullet","bullet_2" , "R");
 	AddImage("bullet","bullet_3" , "R");
-
+	
 	AddImage("enemy","enemy_1" , "G");
+
 	AddImage("player","player_1" , "G");
 	AddImage("player","player_2", "G");
 	AddImage("player","player_3", "G");
+	
 }
 
 
