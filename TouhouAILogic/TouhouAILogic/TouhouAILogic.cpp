@@ -7,14 +7,11 @@
 #include "ImageRecognition.h"
 #include "SystemData.h"
 #include "ImageData.h"
-#include "ControlManager.h"
 
-static TouhouAILogic::ControlManager cm;
 TouhouAILogic::ImageRecognition screen_shot;
 
 System::String^ TouhouAILogic::MainProc::Test()
 {
-	TouhouAILogic::ControlManager cm;
 	cm.Proc();
 	
 	return "te22277777st";

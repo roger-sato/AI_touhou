@@ -12,8 +12,8 @@
 #include "SendMove.h"
 #include "Vec2D.h"
 
-void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<std::string, cv::Mat> xy, cv::Mat& result);
-void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<std::string, cv::Mat> xy, TouhouAILogic::Vec2D p);
+void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<cv::Mat, std::string> xy, cv::Mat& result);
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
 
 void TouhouAILogic::ImageRecognition::Proc()
 {
@@ -36,7 +36,7 @@ void TouhouAILogic::ImageRecognition::Proc()
 
 void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	std::map<std::string, cv::Mat> player_image;
+	std::vector<std::pair<cv::Mat, std::string>> player_image;
 	ImageData::Instance().ImageMap("player",player_image);
 
 	player_maxpt.clear();
@@ -51,7 +51,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	std::map<std::string, cv::Mat> bullet_image;
+	std::vector<std::pair<cv::Mat, std::string>> bullet_image;
 	ImageData::Instance().ImageMap("bullet",bullet_image);
 
 	bullet_maxpt.clear();
@@ -68,7 +68,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 
 void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	std::map<std::string, cv::Mat> enemy_image;
+	std::vector<std::pair<cv::Mat,std::string>> enemy_image;
 	ImageData::Instance().ImageMap("enemy",enemy_image);
 
 	enemy_maxpt.clear();
@@ -83,6 +83,7 @@ void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::vector
 
 
 TouhouAILogic::WindowPrint screen_shot;
+
 void TouhouAILogic::ImageRecognition::ScreenShot()
 {
 	screen_shot.Print();
@@ -110,26 +111,26 @@ void TouhouAILogic::ImageRecognition::DrawRectangle(cv::Mat& img, std::vector<cv
 	}
 }
 
-void TemplateMatch(std::vector<cv::Mat>& planes ,  std::pair<std::string,cv::Mat> xy, cv::Mat& result)
+void TemplateMatch(std::vector<cv::Mat>& planes , std::pair<cv::Mat, std::string> xy, cv::Mat& result)
 {
-	if (xy.first[xy.first.size() - 1] == 'R') {
-		cv::matchTemplate(planes[2], xy.second, result, cv::TM_CCOEFF_NORMED);
+	if (xy.second[xy.second.size() - 1] == 'R') {
+		cv::matchTemplate(planes[2], xy.first, result, cv::TM_CCOEFF_NORMED);
 	}
-	else if (xy.first[xy.first.size() - 1] == 'G') {
-		cv::matchTemplate(planes[1], xy.second, result, cv::TM_CCOEFF_NORMED);
+	else if (xy.second[xy.second.size() - 1] == 'G') {
+		cv::matchTemplate(planes[1], xy.first, result, cv::TM_CCOEFF_NORMED);
 	}
 
-	else if (xy.first[xy.first.size() - 1] == 'B') {
-		cv::matchTemplate(planes[0], xy.second, result, cv::TM_CCOEFF_NORMED);
+	else if (xy.second[xy.second.size() - 1] == 'B') {
+		cv::matchTemplate(planes[0], xy.first, result, cv::TM_CCOEFF_NORMED);
 	}
 }
 
-void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt , std::pair<std::string, cv::Mat> xy ,  TouhouAILogic::Vec2D p)
+void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt , std::pair<cv::Mat, std::string> xy ,  TouhouAILogic::Vec2D p)
 {
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
-				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.second.rows, xy.second.cols);
+				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.rows, xy.first.cols);
 			}
 		}
 	}

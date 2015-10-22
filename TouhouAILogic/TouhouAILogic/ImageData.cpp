@@ -21,22 +21,7 @@ void TouhouAILogic::ImageData::Init()
 	
 }
 
-
-cv::Mat TouhouAILogic::ImageData::Image(std::string type,std::string file)
-{
-	if (type == "enemy") {
-		return enemy_data[file];
-	}
-	else if (type == "bullet") {
-		return bullet_data[file];
-	}
-	else if (type == "player") {
-		return player_data[file];
-	}
-	return cv::Mat();
-}
-
-void TouhouAILogic::ImageData::ImageMap(std::string type, std::map<std::string, cv::Mat>& get_img)
+void TouhouAILogic::ImageData::ImageMap(std::string type, std::vector<std::pair<cv::Mat,std::string>>& get_img)
 {
 	if (type == "enemy") {
 		get_img = enemy_data;
@@ -59,35 +44,35 @@ void TouhouAILogic::ImageData::AddImage(std::string type,std::string name,std::s
 
 	if (type == "enemy") {
 		if (rgb == "R") {
-			enemy_data[name + "_R"] = planes[2];
+			enemy_data.push_back(std::pair<cv::Mat,std::string>(planes[2],"R"));
 		}
 		else if (rgb == "G") {
-			enemy_data[name + "_G"] = planes[1];
+			enemy_data.push_back(std::pair<cv::Mat, std::string>(planes[1],"G"));
 		}
 		else if (rgb == "B") {
-			enemy_data[name + "_B"] = planes[0];
+			enemy_data.push_back(std::pair<cv::Mat, std::string>(planes[0],"B"));
 		}
 	}
 	else if (type == "bullet") {
 		if (rgb == "R") {
-			bullet_data[name + "_R"] = planes[2];
+			bullet_data.push_back(std::pair<cv::Mat, std::string>(planes[2],"R"));
 		}
 		else if (rgb == "G") {
-			bullet_data[name + "_G"] = planes[1];
+			bullet_data.push_back(std::pair<cv::Mat, std::string>(planes[1],"G"));
 		}
 		else if (rgb == "B") {
-			bullet_data[name + "_B"] = planes[0];
+			bullet_data.push_back(std::pair<cv::Mat, std::string>(planes[0],"B"));
 		}
 	}
 	else if (type == "player") {
 		if (rgb == "R") {
-			player_data[name + "_R"] = planes[2];
+			player_data.push_back(std::pair<cv::Mat, std::string>(planes[2],"R"));
 		}
 		else if (rgb == "G") {
-			player_data[name + "_G"] = planes[1];
+			player_data.push_back(std::pair<cv::Mat, std::string>(planes[1],"G"));
 		}
 		else if (rgb == "B") {
-			player_data[name + "_B"] = planes[0];
+			player_data.push_back(std::pair<cv::Mat, std::string>(planes[0],"B"));
 		}
 	}
 }

@@ -5,22 +5,14 @@
 
 namespace TouhouAILogic {
 
-	class ControlManager {
-		WindowPrint printer;
-		ImageRecognition recog;
-		Player player;
+	ref class ControlManager {
 
 	public:
 		ControlManager() {}
 		void Proc();
 
 	private:
-		cv::Mat screen_image;
-		std::vector<cv::Mat> screen_planes;
 		void GetPrintScreenModule();
-		void PlayerModule();
-		void EnemyModule();
-		void BulletModule();
 	};
 
 }
