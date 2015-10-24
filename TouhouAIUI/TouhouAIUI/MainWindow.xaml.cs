@@ -27,7 +27,7 @@ namespace TouhouAIUI
         private void SendKeyPre()
         {
             Interaction.AppActivate(p.Id);
-            System.Threading.Thread.Sleep(30);
+            System.Threading.Thread.Sleep(100);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -95,7 +95,7 @@ namespace TouhouAIUI
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(MyProc);
-            timer.Interval = 70;
+            timer.Interval = 120;
             timer.Start();
 
         }
@@ -121,7 +121,7 @@ namespace TouhouAIUI
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(ScreenShot_event);
-            timer.Interval = 150;
+            timer.Interval = 30;
             timer.Start();
         }
 

@@ -34,19 +34,24 @@ void TouhouAILogic::ImageRecognition::Proc()
 	cv::imshow("matching", img);
 }
 
-void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
+void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes, Vec2D p)
 {
 	std::vector<std::pair<cv::Mat, std::string>> player_image;
-	ImageData::Instance().ImageMap("player",player_image);
+	ImageData::Instance().ImageMap("player", player_image);
 
 	player_maxpt.clear();
 
-	for (auto xy : player_image) {
-		cv::Mat result;
-		
-		TemplateMatch(planes, xy, result);
-		SearchMatch(result, 0.65f, player_maxpt ,xy , p);
-	}
+	if (player_image.empty())
+		return;
+
+	auto xy = player_image[player_i];
+	player_i = ++player_i % player_image.size();
+
+	cv::Mat result;
+
+	TemplateMatch(planes, xy, result);
+	SearchMatch(result, 0.65f, player_maxpt, xy, p);
+
 }
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
@@ -55,6 +60,14 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 	ImageData::Instance().ImageMap("bullet",bullet_image);
 
 	bullet_maxpt.clear();
+
+
+	if (bullet_image.empty())
+		return;
+
+	auto xy = bullet_image[bullet_i];
+	bullet_i = ++bullet_i % bullet_image.size();
+
 
 	for (auto xy : bullet_image) {
 		cv::Mat result;
@@ -72,6 +85,14 @@ void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::vector
 	ImageData::Instance().ImageMap("enemy",enemy_image);
 
 	enemy_maxpt.clear();
+
+
+	if (enemy_image.empty())
+		return;
+
+	auto xy = enemy_image[enemy_i];
+	enemy_i = ++enemy_i% enemy_image.size();
+
 
 	for (auto xy : enemy_image) {
 		cv::Mat result;
@@ -130,7 +151,7 @@ void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& 
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
-				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.rows, xy.first.cols);
+				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.cols, xy.first.rows);
 			}
 		}
 	}
