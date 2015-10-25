@@ -1,9 +1,8 @@
 #include "Stdafx.h"
 #include "ControlManager.h"
+#include "Debug.h"
 #include <random>
 
-using namespace System::Threading;
-using namespace System;
 using namespace TouhouAILogic;
 
 static WindowPrint printer;
@@ -16,43 +15,31 @@ void PlayerModule();
 void EnemyModule();
 void BulletModule();
 
-bool end[3] = { true,true,true };
+TouhouAILogic::ControlManager::ControlManager()
+{
+}
 
 void TouhouAILogic::ControlManager::Proc()
 {
 	GetPrintScreenModule();
 
-	Thread^ player_th = gcnew Thread(gcnew ThreadStart(PlayerModule));
-	Thread^ enemy_th = gcnew Thread(gcnew ThreadStart(EnemyModule));
-	Thread^ bullet_th = gcnew Thread(gcnew ThreadStart(BulletModule));
+	player_th = gcnew Thread(gcnew ThreadStart(PlayerModule));
+	//enemy_th = gcnew Thread(gcnew ThreadStart(EnemyModule));
+	bullet_th = gcnew Thread(gcnew ThreadStart(BulletModule));
 	
-	if(end[0])
+	if(!player_th->IsAlive)
 		player_th->Start();
 
-	if(end[1])
-		enemy_th->Start();
-
-	if(end[2])
+	if(!bullet_th->IsAlive)
 		bullet_th->Start();
+		
 
-	if(!end[0])
-		player_th->Join();
-
-	if (!end[1])
-		enemy_th->Join();
-
-	if (!end[2])
-		bullet_th->Join();
+	player_th->Join();
+	bullet_th->Join();
 	
 
-	if (end[0])
-		recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
-
-	if (end[1])
-		recog.DrawRectangle(screen_image, recog.EnemyRect(), cv::Scalar(0, 0, 255));
-
-	if (end[2])
-		recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
+	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
+	recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
 	
 	cv::imshow("matching", screen_image);
 }
@@ -66,21 +53,30 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 
 void PlayerModule()
 {
-	end[0] = false;
-	recog.PlayerRecognition(screen_image, screen_planes , Vec2D(0, 0));
-	end[0] = true;
+	auto p_p = player.Point();
+
+	p_p.Set(std::max(p_p.X() - 28, 0), std::max(p_p.Y() - 36,0));
+
+	cv::Rect roi_rect(p_p.X(),p_p.Y(), 100, 150);
+
+	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
+	cv::rectangle(screen_image, roi_rect, cv::Scalar(0,0,0), 2, 8, 0);
+
+	std::vector<cv::Mat> player_planes;
+
+	for (auto x : screen_planes) {
+		player_planes.push_back(x(roi_rect));
+	}
+
+	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
 }
 
 void EnemyModule()
 {
-	end[1] = false;
 	recog.EnemyRecognition(screen_image, screen_planes, Vec2D(0, 0));
-	end[1] = true;
 }
 
 void BulletModule()
 {
-	end[2] = false;
 	recog.BulletRecognition(screen_image, screen_planes, Vec2D(0, 0));
-	end[2] = true;
 }

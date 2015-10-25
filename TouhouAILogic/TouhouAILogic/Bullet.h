@@ -3,19 +3,16 @@
 #include "Vec2D.h"
 #include <vector>
 #include <opencv2\opencv.hpp>
-#include "SendMove.h"
 
 namespace TouhouAILogic {
-	class Player {
-		Vec2D point;
-		SendMove move;
+	class Bullet {
+		std::vector<cv::Rect> points;
 		bool is_recognited = false;
 
 	public:
-		Player();
-		Vec2D Point();
-		void Move(Vec2D);
-		void InputPoint(std::vector<cv::Point>);
+		Bullet();
+		std::vector<cv::Rect> Points();
+		void InputPoint(std::vector<cv::Rect>);
 
 		bool IsRegognited() { return is_recognited; }
 	};

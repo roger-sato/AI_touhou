@@ -10,6 +10,7 @@ namespace TouhouAILogic {
 		std::vector<std::pair<cv::Mat,std::string>> enemy_data;
 		std::vector<std::pair<cv::Mat, std::string>> bullet_data;
 		std::vector<std::pair<cv::Mat, std::string>> player_data;
+		std::vector<std::pair<cv::Mat, std::string>> player_data_move;
 
 
 	public:

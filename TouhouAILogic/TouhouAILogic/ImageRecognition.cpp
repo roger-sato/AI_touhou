@@ -44,14 +44,17 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 	if (player_image.empty())
 		return;
 
-	auto xy = player_image[player_i];
-	player_i = ++player_i % player_image.size();
 
-	cv::Mat result;
+	for (int i = 0; i < 9; ++i) {
 
-	TemplateMatch(planes, xy, result);
-	SearchMatch(result, 0.65f, player_maxpt, xy, p);
+		auto xy = player_image[player_i];
+		player_i = ++player_i % player_image.size();
 
+		cv::Mat result;
+
+		TemplateMatch(planes, xy, result);
+		SearchMatch(result, 0.65f, player_maxpt, xy, p);
+	}
 }
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)

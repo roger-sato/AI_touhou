@@ -1,24 +1,18 @@
 #include "Stdafx.h"
-#include "Player.h"
+#include "Bullet.h"
 #include <algorithm>
 
-TouhouAILogic::Player::Player()
+TouhouAILogic::Bullet::Bullet()
 {
-	point.Set(357,754);
 }
 
-TouhouAILogic::Vec2D TouhouAILogic::Player::Point()
+std::vector<cv::Rect> TouhouAILogic::Bullet::Points()
 {
-	return point;
+	return points;
 }
 
-void TouhouAILogic::Player::Move(Vec2D v)
-{
-	point.Add(v);
-	move.MovePlayer(v);
-}
 
-void TouhouAILogic::Player::InputPoint(std::vector<cv::Point> input)
+void TouhouAILogic::Bullet::InputPoint(std::vector<cv::Rect> input)
 {
 	if (input.empty())
 		return;
@@ -36,5 +30,5 @@ void TouhouAILogic::Player::InputPoint(std::vector<cv::Point> input)
 		min_y = std::min(in.y, min_y);
 	}
 	is_recognited = true;
-	point.Set((max_x+min_x)/2, (max_y + min_y) / 2);
+	//point.Set((max_x + min_x) / 2, (max_y + min_y) / 2);
 }

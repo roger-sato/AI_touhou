@@ -13,11 +13,33 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("bullet","bullet_2" , "R");
 	AddImage("bullet","bullet_3" , "R");
 	
-	AddImage("enemy","enemy_1" , "G");
+	//AddImage("enemy","enemy_1" , "G");
 
-	AddImage("player","player_1" , "G");
-	AddImage("player","player_2", "G");
-	AddImage("player","player_3", "G");
+	AddImage("player", "player_1", "G");
+	AddImage("player", "player_2", "G");
+	AddImage("player", "player_3", "G");
+
+	AddImage("player", "player_4", "G");
+	AddImage("player", "player_5", "G");
+	AddImage("player", "player_6", "G");
+
+	AddImage("player", "player_7", "G");
+	AddImage("player", "player_8", "G");
+	AddImage("player", "player_9", "G");
+
+	AddImage("player", "player_10", "MG");
+	AddImage("player", "player_11", "MG");
+	AddImage("player", "player_12", "MG");
+
+	AddImage("player", "player_13", "MG");
+	AddImage("player", "player_14", "MG");
+	AddImage("player", "player_15", "MG");
+
+	AddImage("player", "player_16", "MG");
+	AddImage("player", "player_17", "MG");
+	AddImage("player", "player_18", "MG");
+
+	AddImage("player", "player_19", "MG");
 	
 }
 
@@ -70,6 +92,9 @@ void TouhouAILogic::ImageData::AddImage(std::string type,std::string name,std::s
 		}
 		else if (rgb == "G") {
 			player_data.push_back(std::pair<cv::Mat, std::string>(planes[1],"G"));
+		}
+		else if (rgb == "MG") {
+			player_data_move.push_back(std::pair<cv::Mat, std::string>(planes[1], "G"));
 		}
 		else if (rgb == "B") {
 			player_data.push_back(std::pair<cv::Mat, std::string>(planes[0],"B"));

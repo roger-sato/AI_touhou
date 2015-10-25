@@ -121,7 +121,7 @@ namespace TouhouAIUI
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(ScreenShot_event);
-            timer.Interval = 30;
+            timer.Interval = 60;
             timer.Start();
         }
 
