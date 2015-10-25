@@ -40,6 +40,8 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("player", "player_18", "MG");
 
 	AddImage("player", "player_19", "MG");
+	//AddImage("player", "player_20", "MG");
+	//AddImage("player", "player_21", "MG");
 	
 }
 
@@ -53,6 +55,9 @@ void TouhouAILogic::ImageData::ImageMap(std::string type, std::vector<std::pair<
 	}
 	else if (type == "player") {
 		get_img = player_data;
+	}
+	else if (type == "move_player") {
+		get_img = player_data_move;
 	}
 }
 

@@ -14,6 +14,7 @@
 
 void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<cv::Mat, std::string> xy, cv::Mat& result);
 void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
+void SearchMatch_p(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
 
 void TouhouAILogic::ImageRecognition::Proc()
 {
@@ -37,7 +38,9 @@ void TouhouAILogic::ImageRecognition::Proc()
 void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes, Vec2D p)
 {
 	std::vector<std::pair<cv::Mat, std::string>> player_image;
+	std::vector<std::pair<cv::Mat, std::string>> player_image_move;
 	ImageData::Instance().ImageMap("player", player_image);
+	ImageData::Instance().ImageMap("move_player", player_image_move);
 
 	player_maxpt.clear();
 
@@ -45,16 +48,33 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		return;
 
 
-	for (int i = 0; i < 9; ++i) {
+	for (int i = 0; i < 10; ++i) {
+		auto xy = player_image_move[player_move_i];
+		player_move_i = ++player_move_i % player_image_move.size();
 
+		cv::Mat result;
+
+		TemplateMatch(planes, xy, result);
+		SearchMatch_p(result, 0.65f, player_maxpt, xy, p);
+		
+		if (!player_maxpt.empty())
+			return;
+	}
+
+
+	for (int i = 0; i < 2; ++i) {
 		auto xy = player_image[player_i];
 		player_i = ++player_i % player_image.size();
 
 		cv::Mat result;
 
 		TemplateMatch(planes, xy, result);
-		SearchMatch(result, 0.65f, player_maxpt, xy, p);
+		SearchMatch_p(result, 0.65f, player_maxpt, xy, p);
+
+		if (!player_maxpt.empty())
+			return;
 	}
+
 }
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
@@ -155,6 +175,19 @@ void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& 
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
 				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.cols, xy.first.rows);
+			}
+		}
+	}
+}
+
+//プレイヤーに最適化
+void SearchMatch_p(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p)
+{
+	for (int y = 0; y < result.rows; ++y) {
+		for (int x = 0; x < result.cols; ++x) {
+			if (result.at<float>(y, x) > threshold) {
+				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.cols, xy.first.rows);
+				return;
 			}
 		}
 	}

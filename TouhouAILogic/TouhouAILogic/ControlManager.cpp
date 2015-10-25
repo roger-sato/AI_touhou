@@ -17,6 +17,7 @@ void BulletModule();
 
 TouhouAILogic::ControlManager::ControlManager()
 {
+
 }
 
 void TouhouAILogic::ControlManager::Proc()
@@ -55,9 +56,9 @@ void PlayerModule()
 {
 	auto p_p = player.Point();
 
-	p_p.Set(std::max(p_p.X() - 28, 0), std::max(p_p.Y() - 36,0));
+	p_p.Set(std::max(p_p.X() - 100, 0), std::max(p_p.Y() - 100,0));
 
-	cv::Rect roi_rect(p_p.X(),p_p.Y(), 100, 150);
+	cv::Rect roi_rect(p_p.X(),p_p.Y(), std::min(300 , screen_image.cols - p_p.X()) , std::min(300, screen_image.rows - p_p.Y()));
 
 	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
 	cv::rectangle(screen_image, roi_rect, cv::Scalar(0,0,0), 2, 8, 0);
@@ -69,6 +70,10 @@ void PlayerModule()
 	}
 
 	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
+
+	debug_out << recog.PlayerRect().size() << std::endl;
+
+	player.InputPoint(recog.PlayerRect());
 }
 
 void EnemyModule()

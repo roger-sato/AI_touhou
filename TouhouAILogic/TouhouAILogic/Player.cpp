@@ -18,7 +18,7 @@ void TouhouAILogic::Player::Move(Vec2D v)
 	move.MovePlayer(v);
 }
 
-void TouhouAILogic::Player::InputPoint(std::vector<cv::Point> input)
+void TouhouAILogic::Player::InputPoint(std::vector<cv::Rect> input)
 {
 	if (input.empty())
 		return;
