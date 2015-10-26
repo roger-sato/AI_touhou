@@ -1,19 +1,28 @@
 #pragma once
 
 #include "Vec2D.h"
-#include <vector>
 #include <opencv2\opencv.hpp>
 
 namespace TouhouAILogic {
 	class Bullet {
-		std::vector<cv::Rect> points;
-		bool is_recognited = false;
+		cv::Mat& img;
+		cv::Rect rect;
+		cv::Point mid_point;
+		Vec2D move_vec;
 
+		const int defo_life_time = 5;
+
+		int life_time = defo_life_time;
+		
 	public:
-		Bullet();
-		std::vector<cv::Rect> Points();
-		void InputPoint(std::vector<cv::Rect>);
+		Bullet(cv::Mat&);
+		cv::Rect Rect();
+		void InputRect(cv::Rect);
+		void Update(bool can_reco);
+		cv::Point MidPoint();
 
-		bool IsRegognited() { return is_recognited; }
+		void SetMoveVec(Vec2D);
+
+		bool IsDead() { return life_time <= 0; }
 	};
 }

@@ -2,33 +2,37 @@
 #include "Bullet.h"
 #include <algorithm>
 
-TouhouAILogic::Bullet::Bullet()
+TouhouAILogic::Bullet::Bullet(cv::Mat& image):img(image)
 {
 }
 
-std::vector<cv::Rect> TouhouAILogic::Bullet::Points()
+cv::Rect TouhouAILogic::Bullet::Rect()
 {
-	return points;
+	return rect;
 }
 
-
-void TouhouAILogic::Bullet::InputPoint(std::vector<cv::Rect> input)
+void TouhouAILogic::Bullet::InputRect(cv::Rect p)
 {
-	if (input.empty())
-		return;
+	rect = p;
+}
 
-	int max_x = -99999;
-	int max_y = -99999;
-
-	int min_x = 99999;
-	int min_y = 99999;
-
-	for (auto in : input) {
-		max_x = std::max(in.x, max_x);
-		max_y = std::max(in.y, max_y);
-		min_x = std::min(in.x, min_x);
-		min_y = std::min(in.y, min_y);
+void TouhouAILogic::Bullet::Update(bool can_reco)
+{
+	if (can_reco) {
+		life_time = defo_life_time;
 	}
-	is_recognited = true;
-	//point.Set((max_x + min_x) / 2, (max_y + min_y) / 2);
+	else {
+		--life_time;
+	}
 }
+
+cv::Point TouhouAILogic::Bullet::MidPoint()
+{
+	return cv::Point(rect.x + rect.width / 2 , rect.y + rect.height / 2);
+}
+
+void TouhouAILogic::Bullet::SetMoveVec(Vec2D v)
+{
+	move_vec = v;
+}
+

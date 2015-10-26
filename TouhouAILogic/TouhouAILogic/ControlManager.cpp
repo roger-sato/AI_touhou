@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 #include "ControlManager.h"
 #include "Debug.h"
-#include <random>
+#include "Bullets.h"
 
 using namespace TouhouAILogic;
 
@@ -10,6 +10,16 @@ static ImageRecognition recog;
 static Player player;
 static cv::Mat screen_image;
 static std::vector<cv::Mat> screen_planes;
+static Bullets bullets;
+	
+static int search_rect_i = 0;
+static const int wdiv = 386; 
+static const int hdiv = 225;
+static cv::Rect BulletSearchRect[8] = 
+{
+	cv::Rect(0,0,wdiv,hdiv) , cv::Rect(wdiv,0,wdiv,hdiv),cv::Rect(0,hdiv,wdiv,hdiv),cv::Rect(wdiv,hdiv,wdiv,hdiv),
+	cv::Rect(0,2 * hdiv,wdiv,hdiv),cv::Rect(wdiv,2 * hdiv,wdiv,hdiv),cv::Rect(0,3 * hdiv,wdiv,hdiv),cv::Rect(wdiv,3 * hdiv,wdiv,hdiv)
+};
 
 void PlayerModule();
 void EnemyModule();
@@ -25,19 +35,18 @@ void TouhouAILogic::ControlManager::Proc()
 	GetPrintScreenModule();
 
 	player_th = gcnew Thread(gcnew ThreadStart(PlayerModule));
-	//enemy_th = gcnew Thread(gcnew ThreadStart(EnemyModule));
 	bullet_th = gcnew Thread(gcnew ThreadStart(BulletModule));
 	
-	if(!player_th->IsAlive)
+	if (!player_th->IsAlive) {
 		player_th->Start();
+	}
 
-	if(!bullet_th->IsAlive)
+	if (!bullet_th->IsAlive) {
 		bullet_th->Start();
+	}
 		
-
 	player_th->Join();
 	bullet_th->Join();
-	
 
 	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
 	recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
@@ -56,9 +65,13 @@ void PlayerModule()
 {
 	auto p_p = player.Point();
 
-	p_p.Set(std::max(p_p.X() - 100, 0), std::max(p_p.Y() - 100,0));
+	const int h = 300;
+	const int w = 300;
 
-	cv::Rect roi_rect(p_p.X(),p_p.Y(), std::min(300 , screen_image.cols - p_p.X()) , std::min(300, screen_image.rows - p_p.Y()));
+	p_p.Set(std::max(p_p.X() - w/2, 0), std::max(p_p.Y() - h/2,0));
+	p_p.Set(std::min(p_p.X(), screen_image.cols - w), std::min(p_p.Y(),screen_image.rows - h));
+
+	cv::Rect roi_rect(p_p.X(),p_p.Y(), w , h);
 
 	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
 	cv::rectangle(screen_image, roi_rect, cv::Scalar(0,0,0), 2, 8, 0);
@@ -71,17 +84,31 @@ void PlayerModule()
 
 	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
 
-	debug_out << recog.PlayerRect().size() << std::endl;
-
 	player.InputPoint(recog.PlayerRect());
-}
-
-void EnemyModule()
-{
-	recog.EnemyRecognition(screen_image, screen_planes, Vec2D(0, 0));
 }
 
 void BulletModule()
 {
-	recog.BulletRecognition(screen_image, screen_planes, Vec2D(0, 0));
+	/*
+	auto e_p = bullets.OutRecoBullets();
+	const int sp_w = 20;
+	const int sp_h = 20;
+	*/
+
+	auto sr = BulletSearchRect[search_rect_i];
+	search_rect_i = ++search_rect_i % 8;
+
+	std::vector<cv::Mat> bullet_planes;
+
+	for (auto x : screen_planes) {
+		bullet_planes.push_back(x(sr));
+	}
+
+	recog.BulletRecognition(screen_image, bullet_planes, Vec2D(sr.x, sr.y));
+}
+
+
+void EnemyModule()
+{
+	recog.EnemyRecognition(screen_image, screen_planes, Vec2D(0, 0));
 }
