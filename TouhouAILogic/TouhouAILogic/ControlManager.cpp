@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "ControlManager.h"
 #include "Bullets.h"
+#include "Debug.h"
 
 using namespace TouhouAILogic;
 
@@ -47,8 +48,8 @@ void TouhouAILogic::ControlManager::Proc()
 	player_th->Join();
 	bullet_th->Join();
 
-	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
-	recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
+	//recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
+	//recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
 	
 	cv::imshow("matching", screen_image);
 }
@@ -102,8 +103,7 @@ void BulletModule()
 
 	bullets.InputRecoBullets(recog.Bullets());
 
-	bullets.ClearBullets();
-	return;
+
 	//Ç∑Ç≈Ç…å©Ç¬ÇØÇƒÇÈíeíTçı
 
 	auto bull = bullets.OutRecoBullets();
@@ -114,12 +114,12 @@ void BulletModule()
 		bullet_planes.clear();
 
 		auto b_p = x.Rect();
-		b_p.x = std::min(std::max(b_p.x - sp_w / 2, 0), screen_image.cols - sp_w);
-		b_p.y = std::min(std::max(b_p.y - sp_h / 2, 0), screen_image.rows - sp_h);
+		b_p.x = std::min(std::max(b_p.x - sp_w / 2, 0), screen_image.cols - (sp_w + b_p.width));
+		b_p.y = std::min(std::max(b_p.y - sp_h / 2, 0), screen_image.rows - (sp_h + b_p.height));
 		b_p.width += sp_w;
 		b_p.height += sp_h;
 
-		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
+		//cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
 		
 		for (auto xy : screen_planes) {
 			bullet_planes.push_back(xy(b_p));
@@ -128,7 +128,7 @@ void BulletModule()
 		recog.BulletRecognitionInd(screen_image, x.Image(), bullet_planes, Vec2D(b_p.x, b_p.y));
 	}
 
-	bullets.ClearBullets();
+	//bullets.ClearBullets();
 
 	bullets.InputRecoBullets(recog.Bullets());
 }

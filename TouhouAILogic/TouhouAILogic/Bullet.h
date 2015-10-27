@@ -10,7 +10,7 @@ namespace TouhouAILogic {
 		cv::Point mid_point;
 		Vec2D move_vec;
 
-		const int defo_life_time = 5;
+		const int defo_life_time = 3;
 
 		int life_time = defo_life_time;
 
@@ -27,36 +27,8 @@ namespace TouhouAILogic {
 
 		void SetMoveVec(Vec2D);
 
-		bool IsDead() { return life_time <= 0; }
+		bool IsDead() { return life_time < 0; }
 
-		Bullet& operator=(const Bullet& b)
-		{
-			//img = b.Image();
-			//rect = b.Rect();
-			//mid_point = b.MidPoint();
-			//life_time = b.LifeTime();
-			return *this;
-		}
-		
-		bool operator==(Bullet b) 
-		{
-			
-			if (b.Rect().width == Rect().width && b.Rect().height == Rect().height) {
-				auto dx = (b.Rect().x - Rect().x); 
-				auto dy = (b.Rect().y - Rect().y);
-				if (dx*dx > 5 && dy * dy > 5) {
-					return true;
-				}
-			}
-
-			return false;
-			
-		}
-
-		bool operator<(Bullet b)
-		{
-			return Rect().x < b.Rect().x;
-		}
 
 	};
 }

@@ -99,7 +99,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.8f, bullet_maxpt ,xy , p);
+		SearchMatch(result, 0.7f, bullet_maxpt ,xy , p);
 
 		for (auto y : bullet_maxpt) {
 			Bullet b(xy);
@@ -210,7 +210,7 @@ void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& 
 	for (int y = 0; y < result.rows; ++y) {
 		for (int x = 0; x < result.cols; ++x) {
 			if (result.at<float>(y, x) > threshold) {
-				maxpt.emplace_back(x + p.X(), y + p.Y(), xy.first.cols, xy.first.rows);
+				maxpt.push_back(cv::Rect(x + p.X(), y + p.Y(), xy.first.cols, xy.first.rows));
 			}
 		}
 	}
