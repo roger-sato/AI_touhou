@@ -8,11 +8,19 @@ TouhouAILogic::Bullets::Bullets()
 {
 }
 
-std::list<Bullet> TouhouAILogic::Bullets::OutRecoBullets()
+std::vector<Bullet> TouhouAILogic::Bullets::OutRecoBullets()
 {
-	return std::list<Bullet>();
+	return bullets;
 }
 
-void TouhouAILogic::Bullets::InputRecoBullets(std::vector<cv::Rect>)
+void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet>& b)
 {
+	for (auto x : b) {
+		bullets.push_back(x);
+	}
+}
+
+void TouhouAILogic::Bullets::ClearBullets()
+{
+	bullets.clear();
 }

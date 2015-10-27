@@ -5,7 +5,7 @@
 
 namespace TouhouAILogic {
 	class Bullet {
-		cv::Mat& img;
+		std::pair<cv::Mat, std::string>& img;
 		cv::Rect rect;
 		cv::Point mid_point;
 		Vec2D move_vec;
@@ -15,11 +15,13 @@ namespace TouhouAILogic {
 		int life_time = defo_life_time;
 		
 	public:
-		Bullet(cv::Mat&);
+		Bullet(std::pair<cv::Mat, std::string>&);
 		cv::Rect Rect();
 		void InputRect(cv::Rect);
 		void Update(bool can_reco);
 		cv::Point MidPoint();
+		void SetPoint(cv::Point);
+		std::pair<cv::Mat,std::string> Image();
 
 		void SetMoveVec(Vec2D);
 

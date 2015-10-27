@@ -8,12 +8,12 @@
 namespace TouhouAILogic {
 
 	class Bullets {
-
+		std::vector<Bullet> bullets;
 	public:
 		Bullets();
 
-		std::list<Bullet> OutRecoBullets();
-		void InputRecoBullets(std::vector<cv::Rect>);
-
+		std::vector<Bullet> OutRecoBullets();
+		void InputRecoBullets(std::vector<Bullet>&);
+		void ClearBullets();
 	};
 }

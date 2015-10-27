@@ -95,7 +95,7 @@ namespace TouhouAIUI
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(MyProc);
-            timer.Interval = 40;
+            timer.Interval = 70;
             timer.Start();
 
         }
