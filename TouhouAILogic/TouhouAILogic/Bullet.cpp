@@ -2,11 +2,12 @@
 #include "Bullet.h"
 #include <algorithm>
 
-TouhouAILogic::Bullet::Bullet(std::pair<cv::Mat,std::string>& image) :img(image)
+TouhouAILogic::Bullet::Bullet(std::pair<cv::Mat,std::string> image)
 {
+	img = image;
 }
 
-cv::Rect TouhouAILogic::Bullet::Rect()
+cv::Rect TouhouAILogic::Bullet::Rect()const
 {
 	return rect;
 }
@@ -26,9 +27,14 @@ void TouhouAILogic::Bullet::Update(bool can_reco)
 	}
 }
 
-cv::Point TouhouAILogic::Bullet::MidPoint()
+cv::Point TouhouAILogic::Bullet::MidPoint()const
 {
 	return cv::Point(rect.x + rect.width / 2 , rect.y + rect.height / 2);
+}
+
+int TouhouAILogic::Bullet::LifeTime()const
+{
+	return life_time;
 }
 
 void TouhouAILogic::Bullet::SetPoint(cv::Point p)
@@ -37,7 +43,7 @@ void TouhouAILogic::Bullet::SetPoint(cv::Point p)
 	rect.y = p.y;
 }
 
-std::pair<cv::Mat,std::string> TouhouAILogic::Bullet::Image()
+std::pair<cv::Mat,std::string> TouhouAILogic::Bullet::Image()const
 {
 	return img;
 }

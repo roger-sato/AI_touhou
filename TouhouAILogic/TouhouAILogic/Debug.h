@@ -2,5 +2,5 @@
 
 #include <fstream>
 
-std::ofstream debug_out("debug.txt");
+std::ofstream out("debug_out.txt");
 
