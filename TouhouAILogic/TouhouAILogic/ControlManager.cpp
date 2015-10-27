@@ -14,11 +14,10 @@ static Bullets bullets;
 	
 static int search_rect_i = 0;
 static const int wdiv = 386; 
-static const int hdiv = 225;
-static cv::Rect BulletSearchRect[8] = 
+static const int hdiv = 450;
+static cv::Rect BulletSearchRect[4] = 
 {
 	cv::Rect(0,0,wdiv,hdiv) , cv::Rect(wdiv,0,wdiv,hdiv),cv::Rect(0,hdiv,wdiv,hdiv),cv::Rect(wdiv,hdiv,wdiv,hdiv),
-	cv::Rect(0,2 * hdiv,wdiv,hdiv),cv::Rect(wdiv,2 * hdiv,wdiv,hdiv),cv::Rect(0,3 * hdiv,wdiv,hdiv),cv::Rect(wdiv,3 * hdiv,wdiv,hdiv)
 };
 
 void PlayerModule();
@@ -49,7 +48,7 @@ void TouhouAILogic::ControlManager::Proc()
 	bullet_th->Join();
 
 	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
-	recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
+	recog.DrawRectangle(screen_image, recog.Bullets.(), cv::Scalar(255, 0, 255));
 	
 	cv::imshow("matching", screen_image);
 }
@@ -65,8 +64,8 @@ void PlayerModule()
 {
 	auto p_p = player.Point();
 
-	const int h = 300;
-	const int w = 300;
+	const int h = 200;
+	const int w = 200;
 
 	p_p.Set(std::max(p_p.X() - w/2, 0), std::max(p_p.Y() - h/2,0));
 	p_p.Set(std::min(p_p.X(), screen_image.cols - w), std::min(p_p.Y(),screen_image.rows - h));
@@ -96,7 +95,7 @@ void BulletModule()
 	*/
 
 	auto sr = BulletSearchRect[search_rect_i];
-	search_rect_i = ++search_rect_i % 8;
+	search_rect_i = ++search_rect_i % 4;
 
 	std::vector<cv::Mat> bullet_planes;
 
@@ -105,6 +104,8 @@ void BulletModule()
 	}
 
 	recog.BulletRecognition(screen_image, bullet_planes, Vec2D(sr.x, sr.y));
+
+	bullets.InputRecoBullets(recog.BulletRect());
 }
 
 

@@ -8,9 +8,12 @@
 #include "PrintWindow.h"
 #include <vector>
 #include "ImageData.h"
+#include "Bullet.h"
 
 #include "SendMove.h"
 #include "Vec2D.h"
+
+using namespace TouhouAILogic;
 
 void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<cv::Mat, std::string> xy, cv::Mat& result);
 void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
@@ -48,7 +51,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		return;
 
 
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		auto xy = player_image_move[player_move_i];
 		player_move_i = ++player_move_i % player_image_move.size();
 
@@ -92,11 +95,20 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 	bullet_i = ++bullet_i % bullet_image.size();
 
 
+	std::vector<cv::Rect> tbullet_maxpt;
+
 	for (auto xy : bullet_image) {
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.65f, bullet_maxpt ,xy , p);
+		SearchMatch(result, 0.65f, tbullet_maxpt ,xy , p);
+
+		for (auto y : tbullet_maxpt) {
+			Bullet b(xy.first);
+			b.InputRect(y);
+
+			bullet_maxpt.push_back(b);
+		}
 	}
 
 
@@ -144,6 +156,15 @@ std::vector<cv::Rect> TouhouAILogic::ImageRecognition::EnemyRect()
 }
 
 std::vector<cv::Rect> TouhouAILogic::ImageRecognition::BulletRect()
+{
+	std::vector<cv::Rect> temp_maxpt;
+
+	for (auto x : bullet_maxpt) {
+
+	}
+}
+
+std::vector<Bullet> TouhouAILogic::ImageRecognition::Bullets()
 {
 	return bullet_maxpt;
 }

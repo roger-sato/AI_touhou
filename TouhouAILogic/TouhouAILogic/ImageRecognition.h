@@ -3,6 +3,7 @@
 #include <vector>
 #include <opencv2\opencv.hpp>
 #include "Vec2D.h"
+#include "Bullet.h"
 
 namespace TouhouAILogic {
 	public class ImageRecognition 
@@ -10,6 +11,7 @@ namespace TouhouAILogic {
 		std::vector<cv::Rect> player_maxpt;
 		std::vector<cv::Rect> enemy_maxpt;
 		std::vector<cv::Rect> bullet_maxpt;
+		std::vector<Bullet> bullet;
 
 		int player_i = 0;
 		int player_move_i = 0;
@@ -27,6 +29,7 @@ namespace TouhouAILogic {
 		std::vector<cv::Rect> PlayerRect();
 		std::vector<cv::Rect> EnemyRect();
 		std::vector<cv::Rect> BulletRect();
+		std::vector<Bullet> Bullets();
 	};
 
 }

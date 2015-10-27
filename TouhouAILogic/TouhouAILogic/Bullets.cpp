@@ -13,6 +13,6 @@ std::list<Bullet> TouhouAILogic::Bullets::OutRecoBullets()
 	return std::list<Bullet>();
 }
 
-void TouhouAILogic::Bullets::InputRecoBullets(std::list<Bullet>)
+void TouhouAILogic::Bullets::InputRecoBullets(std::vector<cv::Rect>)
 {
 }

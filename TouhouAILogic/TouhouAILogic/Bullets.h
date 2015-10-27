@@ -13,7 +13,7 @@ namespace TouhouAILogic {
 		Bullets();
 
 		std::list<Bullet> OutRecoBullets();
-		void InputRecoBullets(std::list<Bullet>);
+		void InputRecoBullets(std::vector<cv::Rect>);
 
 	};
 }
