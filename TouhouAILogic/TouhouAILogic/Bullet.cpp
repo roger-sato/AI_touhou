@@ -48,6 +48,11 @@ std::pair<cv::Mat,std::string> TouhouAILogic::Bullet::Image()const
 	return img;
 }
 
+void TouhouAILogic::Bullet::SetIdentify(std::string i)
+{
+	identify = i;
+}
+
 void TouhouAILogic::Bullet::SetMoveVec(Vec2D v)
 {
 	move_vec = v;

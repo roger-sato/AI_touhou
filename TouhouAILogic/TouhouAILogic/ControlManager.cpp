@@ -123,7 +123,7 @@ void BulletModule()
 		b_p.width += sp_w;
 		b_p.height += sp_h;
 
-		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
+		//cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
 		
 		for (auto xy : screen_planes) {
 			bullet_planes.push_back(xy(b_p));

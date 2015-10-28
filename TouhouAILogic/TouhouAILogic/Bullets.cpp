@@ -29,6 +29,7 @@ std::vector<cv::Rect> TouhouAILogic::Bullets::BulletsRect()
 
 static std::map<std::string, bool> table;
 
+
 void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 {
 
@@ -44,7 +45,7 @@ void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 		table[hash] = ok;
 	}
 
-	out << bullets.size() << std::endl;
+	out << table.size() << std::endl;
 
 	for (auto x = bullets.begin(); x != bullets.end(); ++x){
 		auto hash = bullet_hash.GetHash(x->Rect());

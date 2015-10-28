@@ -16,3 +16,9 @@ std::string TouhouAILogic::BulletHash::GetHash(cv::Rect r)
 {
 	return x_table[r.x / 10] + y_table[r.y / 10] + std::to_string(r.width) + std::to_string(r.height);
 }
+
+std::string TouhouAILogic::BulletHash::GetIdentify()
+{
+	identify++;
+	return std::to_string(identify);
+}

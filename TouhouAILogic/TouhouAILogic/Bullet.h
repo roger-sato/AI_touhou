@@ -9,8 +9,9 @@ namespace TouhouAILogic {
 		cv::Rect rect;
 		cv::Point mid_point;
 		Vec2D move_vec;
+		std::string identify;
 
-		const int defo_life_time = 3;
+		const int defo_life_time = 2;
 
 		int life_time = defo_life_time;
 
@@ -24,6 +25,7 @@ namespace TouhouAILogic {
 		int LifeTime()const;
 		void SetPoint(cv::Point);
 		std::pair<cv::Mat,std::string> Image() const;
+		void SetIdentify(std::string);
 
 		void SetMoveVec(Vec2D);
 
