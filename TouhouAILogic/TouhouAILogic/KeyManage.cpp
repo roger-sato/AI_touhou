@@ -159,3 +159,27 @@ void TouhouAILogic::KeyManage::OffDown()
 	Sleep(20);
 	KeyOff(VK_DOWN);
 }
+
+void TouhouAILogic::KeyManage::OnZ()
+{
+	Sleep(20);
+	KeyOn('Z');
+}
+
+void TouhouAILogic::KeyManage::OffZ()
+{
+	Sleep(20);
+	KeyOff('Z');
+}
+
+void TouhouAILogic::KeyManage::OnX()
+{
+	Sleep(20);
+	KeyOn('X');
+}
+
+void TouhouAILogic::KeyManage::OffX()
+{
+	Sleep(20);
+	KeyOff('X');
+}

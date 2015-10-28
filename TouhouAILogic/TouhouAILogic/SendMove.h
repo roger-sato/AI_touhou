@@ -8,5 +8,6 @@ namespace TouhouAILogic {
 	public:
 		SendMove();
 		void MovePlayer(Vec2D dif);
+		void Update();
 	};
 }

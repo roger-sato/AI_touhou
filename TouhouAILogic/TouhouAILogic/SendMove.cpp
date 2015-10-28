@@ -86,3 +86,15 @@ void TouhouAILogic::SendMove::MovePlayer(Vec2D dif)
 	
 	
 }
+
+static int time = 0;
+
+void TouhouAILogic::SendMove::Update()
+{
+	if (time == 0) {
+		KeyManage::Instance().OffZ();
+		KeyManage::Instance().OnZ();
+	}
+
+	time = ++time % 100;
+}

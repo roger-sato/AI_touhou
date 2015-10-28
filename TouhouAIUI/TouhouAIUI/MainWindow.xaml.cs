@@ -92,6 +92,9 @@ namespace TouhouAIUI
         
         private void Test_Click(object sender, RoutedEventArgs e)
         {
+            Interaction.AppActivate(p.Id);
+            System.Threading.Thread.Sleep(100);
+
             Timer timer = new Timer();
 
             timer.Tick += new EventHandler(MyProc);

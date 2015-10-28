@@ -8,10 +8,11 @@ namespace TouhouAILogic {
 		std::pair<cv::Mat, std::string> img;
 		cv::Rect rect;
 		cv::Point mid_point;
-		Vec2D move_vec;
+		cv::Point move_vec;
 		std::string identify;
+		std::string hash;
 
-		const int defo_life_time = 2;
+		const int defo_life_time  = 1;
 
 		int life_time = defo_life_time;
 
@@ -26,8 +27,12 @@ namespace TouhouAILogic {
 		void SetPoint(cv::Point);
 		std::pair<cv::Mat,std::string> Image() const;
 		void SetIdentify(std::string);
+		
+		std::string GetHash() { return hash; }
+		void SetHash(std::string h) { hash = h; }
 
-		void SetMoveVec(Vec2D);
+		void SetMoveVec(cv::Point);
+		cv::Point MoveVec();
 
 		bool IsDead() { return life_time < 0; }
 

@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "ControlManager.h"
 #include "Bullets.h"
+#include "PlayerAlgorithm.h"
 
 using namespace TouhouAILogic;
 
@@ -10,7 +11,7 @@ static Player player;
 static cv::Mat screen_image;
 static std::vector<cv::Mat> screen_planes;
 static Bullets bullets;
-
+static PlayerAlgorithm player_alg;
 
 void PlayerModule();
 void EnemyModule();
@@ -43,6 +44,9 @@ void TouhouAILogic::ControlManager::Proc()
 	recog.DrawRectangle(screen_image, bullets.BulletsRect() , cv::Scalar(255, 0, 255));
 	
 	cv::imshow("matching", screen_image);
+
+	auto p = player.Point();
+	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player);
 }
 
 void TouhouAILogic::ControlManager::GetPrintScreenModule()
@@ -76,6 +80,8 @@ void PlayerModule()
 	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
 
 	player.InputPoint(recog.PlayerRect());
+
+
 }
 
 static int time_i = 0;
@@ -106,7 +112,7 @@ void BulletModule()
 		bullets.InputRecoBullets(recog.Bullets());
 	}
 
-	time_i = ++ time_i % 4;
+	time_i = ++ time_i % 2;
 
 	//Ç∑Ç≈Ç…å©Ç¬ÇØÇƒÇÈíeíTçı
 
@@ -123,7 +129,12 @@ void BulletModule()
 		b_p.width += sp_w;
 		b_p.height += sp_h;
 
-		//cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
+		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
+		
+		auto p = x.Rect(); 
+		cv::Point pp(p.x, p.y);
+		
+		cv::line(screen_image, pp,pp + 5 * x.MoveVec(), cv::Scalar(0, 255, 255),5);
 		
 		for (auto xy : screen_planes) {
 			bullet_planes.push_back(xy(b_p));

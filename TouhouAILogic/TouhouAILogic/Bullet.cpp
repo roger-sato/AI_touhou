@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include <algorithm>
 
-TouhouAILogic::Bullet::Bullet(std::pair<cv::Mat,std::string> image)
+TouhouAILogic::Bullet::Bullet(std::pair<cv::Mat,std::string> image):move_vec(0,0)
 {
 	img = image;
 }
@@ -53,8 +53,13 @@ void TouhouAILogic::Bullet::SetIdentify(std::string i)
 	identify = i;
 }
 
-void TouhouAILogic::Bullet::SetMoveVec(Vec2D v)
+void TouhouAILogic::Bullet::SetMoveVec(cv::Point v)
 {
 	move_vec = v;
+}
+
+cv::Point TouhouAILogic::Bullet::MoveVec()
+{
+	return move_vec;
 }
 

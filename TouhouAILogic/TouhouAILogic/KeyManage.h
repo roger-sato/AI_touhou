@@ -33,6 +33,12 @@ namespace TouhouAILogic {
 		void OnDown();
 		void OffDown();
 
+		void OnZ();
+		void OffZ();
+		void OnX();
+		void OffX();
+
+
 	private:
 		KeyManage() {}
 		KeyManage(const KeyManage &other) {}

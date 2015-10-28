@@ -119,7 +119,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 	cv::Mat result;
 	TemplateMatch(planes, temp, result);
 
-	SearchMatch(result, 0.65f, temp_maxpt, temp, p);
+	SearchMatch(result, 0.9f, temp_maxpt, temp, p);
 
 	for (auto y : temp_maxpt) {
 		Bullet b(temp);
