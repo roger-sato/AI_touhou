@@ -1,7 +1,6 @@
 #include "Stdafx.h"
 #include "ControlManager.h"
 #include "Bullets.h"
-#include "Debug.h"
 
 using namespace TouhouAILogic;
 
@@ -12,14 +11,6 @@ static cv::Mat screen_image;
 static std::vector<cv::Mat> screen_planes;
 static Bullets bullets;
 
-
-static int search_rect_i = 0;
-static const int wdiv = 386; 
-static const int hdiv = 450;
-static cv::Rect BulletSearchRect[4] = 
-{
-	cv::Rect(0,0,wdiv,hdiv) , cv::Rect(wdiv,0,wdiv,hdiv),cv::Rect(0,hdiv,wdiv,hdiv),cv::Rect(wdiv,hdiv,wdiv,hdiv),
-};
 
 void PlayerModule();
 void EnemyModule();
@@ -48,8 +39,8 @@ void TouhouAILogic::ControlManager::Proc()
 	player_th->Join();
 	bullet_th->Join();
 
-	//recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
-	//recog.DrawRectangle(screen_image, recog.BulletRect(), cv::Scalar(255, 0, 255));
+	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
+	recog.DrawRectangle(screen_image, bullets.BulletsRect() , cv::Scalar(255, 0, 255));
 	
 	cv::imshow("matching", screen_image);
 }
@@ -65,10 +56,10 @@ void PlayerModule()
 {
 	auto p_p = player.Point();
 
-	const int h = 200;
-	const int w = 200;
+	const int h = 250;
+	const int w = 250;
 
-	p_p.Set(std::max(p_p.X() - w/2, 0), std::max(p_p.Y() - h/2,0));
+	p_p.Set(std::max(p_p.X() - (w/2 - 20), 0), std::max(p_p.Y() - h/2,0));
 	p_p.Set(std::min(p_p.X(), screen_image.cols - w), std::min(p_p.Y(),screen_image.rows - h));
 
 	cv::Rect roi_rect(p_p.X(),p_p.Y(), w , h);
@@ -87,28 +78,41 @@ void PlayerModule()
 	player.InputPoint(recog.PlayerRect());
 }
 
+static int time_i = 0;
+
 void BulletModule()
 {
 	//ëSëÃîÕàÕíTçı
-	auto sr = BulletSearchRect[search_rect_i];
-	search_rect_i = ++search_rect_i % 4;
+
+	const int hai = 500;
+	const int wid = 400;
 
 	std::vector<cv::Mat> bullet_planes;
 
+	auto p_p = player.Point();
+	p_p.Set(std::max(p_p.X() - (wid / 2 - 20), 0), std::max(p_p.Y() - (hai * 4 / 5), 0));
+
+	cv::Rect rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
+
+	cv::rectangle(screen_image, rect, cv::Scalar(0, 0, 255), 2, 8, 0);
+
 	for (auto x : screen_planes) {
-		bullet_planes.push_back(x(sr));
+		bullet_planes.push_back(x(rect));
 	}
 
-	recog.BulletRecognition(screen_image, bullet_planes, Vec2D(sr.x, sr.y));
+	if (time_i == 0) {
+		recog.BulletRecognition(screen_image, bullet_planes, Vec2D(rect.x, rect.y));
 
-	bullets.InputRecoBullets(recog.Bullets());
+		bullets.InputRecoBullets(recog.Bullets());
+	}
 
+	time_i = ++ time_i % 4;
 
 	//Ç∑Ç≈Ç…å©Ç¬ÇØÇƒÇÈíeíTçı
 
 	auto bull = bullets.OutRecoBullets();
-	const int sp_w = 40;
-	const int sp_h = 40;
+	const int sp_w = 60;
+	const int sp_h = 60;
 
 	for (auto x : bull) {
 		bullet_planes.clear();
@@ -119,7 +123,7 @@ void BulletModule()
 		b_p.width += sp_w;
 		b_p.height += sp_h;
 
-		//cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
+		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
 		
 		for (auto xy : screen_planes) {
 			bullet_planes.push_back(xy(b_p));
@@ -127,8 +131,6 @@ void BulletModule()
 
 		recog.BulletRecognitionInd(screen_image, x.Image(), bullet_planes, Vec2D(b_p.x, b_p.y));
 	}
-
-	//bullets.ClearBullets();
 
 	bullets.InputRecoBullets(recog.Bullets());
 }

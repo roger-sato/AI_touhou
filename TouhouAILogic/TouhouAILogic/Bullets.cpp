@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "Bullets.h"
 #include "Bullet.h"
+#include "Debug.h"
 
 using namespace TouhouAILogic;
 
@@ -13,6 +14,16 @@ TouhouAILogic::Bullets::Bullets()
 std::list<Bullet> TouhouAILogic::Bullets::OutRecoBullets()
 {
 	return bullets;
+}
+
+std::vector<cv::Rect> TouhouAILogic::Bullets::BulletsRect()
+{
+	std::vector<cv::Rect> rect;
+
+	for (auto x : bullets) {
+		rect.push_back(x.Rect());
+	}
+	return rect;
 }
 
 
@@ -32,6 +43,8 @@ void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 		bullets.push_back(x);
 		table[hash] = ok;
 	}
+
+	out << bullets.size() << std::endl;
 
 	for (auto x = bullets.begin(); x != bullets.end(); ++x){
 		auto hash = bullet_hash.GetHash(x->Rect());

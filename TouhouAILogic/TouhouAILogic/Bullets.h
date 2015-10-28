@@ -15,6 +15,7 @@ namespace TouhouAILogic {
 		Bullets();
 
 		std::list<Bullet> OutRecoBullets();
+		std::vector<cv::Rect> BulletsRect();
 		void InputRecoBullets(std::vector<Bullet>);
 		void ClearBullets();
 	};
