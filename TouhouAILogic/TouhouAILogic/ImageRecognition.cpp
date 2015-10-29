@@ -58,7 +58,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 
 		TemplateMatch(planes, xy, result);
-		SearchMatch_p(result, 0.65f, player_maxpt, xy, p);
+		SearchMatch_p(result, 0.75f, player_maxpt, xy, p);
 		
 		if (!player_maxpt.empty())
 			return;
@@ -72,7 +72,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 
 		TemplateMatch(planes, xy, result);
-		SearchMatch_p(result, 0.65f, player_maxpt, xy, p);
+		SearchMatch_p(result, 0.75f, player_maxpt, xy, p);
 
 		if (!player_maxpt.empty())
 			return;
@@ -99,7 +99,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.7f, bullet_maxpt ,xy , p);
+		SearchMatch(result, 0.75f, bullet_maxpt ,xy , p);
 
 		for (auto y : bullet_maxpt) {
 			Bullet b(xy);

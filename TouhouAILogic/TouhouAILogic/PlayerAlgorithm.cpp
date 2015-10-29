@@ -13,39 +13,24 @@ void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<
 {
 	cv::Point to_v(0,0);
 
+	int min_dd = 9999999;
+
 	for (auto x : bullet_rect) {
-		auto p = x.MidPoint();
+		auto w = x.Image().first.rows+16;
 
-		cv::Point dp = cv::Point(p.x,p.y) - player_p;
-		double di = std::sqrt((dp.x*dp.x + dp.y*dp.y));
-		if (di == 0)
-			di = 1;
+		int kk = 2;
 
-		double ndpx = dp.x / di;
-		double ndpy = dp.y / di;
+		cv::circle(aa, x.MidPoint() + x.MoveVec() * kk, std::sqrt(w*w), cv::Scalar(0, 0, 255), 3);
 
-		cv::Point dp2 = x.MoveVec();
-		double di2 = std::sqrt((dp2.x*dp2.x + dp2.y*dp2.y));
-		if (di2 == 0)
-			di2 = 1;
+		auto bp = x.MidPoint() + x.MoveVec()*kk - player_p;
 
-		double ndpx2 = dp2.x / di2;
-		double ndpy2 = dp2.y / di2;
+		auto dd = bp.x*bp.x + bp.y*bp.y;
 
-
-		auto ndx = (ndpx + ndpx2);
-		auto ndy = (ndpy + ndpy2);
-
-		ndx *= (di);
-		ndy *= (di);
-
-		cv::circle(aa, player_p + cv::Point(-ndx,-ndy), std::sqrt(1000), cv::Scalar(0, 0, 255),10);
-
-		if (ndx*ndx + ndy*ndy > 1000) {
+		if (dd > w*w || dd > min_dd) {
 			continue;
 		}
-
-		auto s = cv::Point(dp.y,-dp.x);
+		min_dd = dd;
+		auto s = cv::Point(bp.y,-bp.x);
 
 		to_v += s;
 	}
@@ -54,9 +39,9 @@ void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<
 		cv::Point defp(357, 754);
 		auto ss = defp - player_p;
 
-		cv::circle(aa, defp, std::sqrt(10000), cv::Scalar(0, 255, 255),5);
+		cv::circle(aa, defp, std::sqrt(20000), cv::Scalar(0, 255, 255),5);
 
-		if (ss.x*ss.x + ss.y*ss.y > 10000) {
+		if (ss.x*ss.x + ss.y*ss.y > 20000) {
 			to_v += ss;
 		}
 

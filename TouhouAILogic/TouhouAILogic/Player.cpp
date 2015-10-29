@@ -14,7 +14,7 @@ TouhouAILogic::Vec2D TouhouAILogic::Player::Point()
 
 TouhouAILogic::Vec2D TouhouAILogic::Player::MidPoint()
 {
-	return Vec2D(point.X() + 13,point.Y() + 20);
+	return Vec2D(point.X() + 10,point.Y() + 20);
 }
 
 void TouhouAILogic::Player::Move(Vec2D v)

@@ -57,12 +57,14 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 	cv::split(screen_image, screen_planes);
 }
 
+static int player_count = 1;
+
 void PlayerModule()
 {
 	auto p_p = player.Point();
 
-	const int h = 250;
-	const int w = 250;
+	const int h = 200;
+	const int w = 200;
 
 	p_p.Set(std::max(p_p.X() - (w/2 - 20), 0), std::max(p_p.Y() - h/2,0));
 	p_p.Set(std::min(p_p.X(), screen_image.cols - w), std::min(p_p.Y(),screen_image.rows - h));
@@ -80,7 +82,18 @@ void PlayerModule()
 
 	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
 
-	player.InputPoint(recog.PlayerRect());
+	auto prect = recog.PlayerRect();
+
+	if (prect.empty()) {
+		if (--player_count < 0) {
+			prect.push_back(cv::Rect(357, 754,14,44));
+		}
+	}
+	else {
+		player_count = 1;
+	}
+
+	player.InputPoint(prect);
 
 
 }
@@ -91,8 +104,8 @@ void BulletModule()
 {
 	//ëSëÃîÕàÕíTçı
 
-	const int hai = 450;
-	const int wid = 400;
+	const int hai = 300;
+	const int wid = 300;
 
 	std::vector<cv::Mat> bullet_planes;
 
@@ -106,20 +119,18 @@ void BulletModule()
 	for (auto x : screen_planes) {
 		bullet_planes.push_back(x(rect));
 	}
-
 	if (time_i == 0) {
 		recog.BulletRecognition(screen_image, bullet_planes, Vec2D(rect.x, rect.y));
 
 		bullets.InputRecoBullets(recog.Bullets());
 	}
-
-	time_i = ++ time_i % 2;
+	time_i = ++time_i % 2;
 
 	//Ç∑Ç≈Ç…å©Ç¬ÇØÇƒÇÈíeíTçı
-
+	
 	auto bull = bullets.OutRecoBullets();
-	const int sp_w = 60;
-	const int sp_h = 60;
+	const int sp_w = 50;
+	const int sp_h = 50;
 
 	for (auto x : bull) {
 		bullet_planes.clear();
@@ -144,6 +155,7 @@ void BulletModule()
 	}
 
 	bullets.InputRecoBullets(recog.Bullets());
+	
 }
 
 
