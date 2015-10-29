@@ -57,7 +57,7 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 	cv::split(screen_image, screen_planes);
 }
 
-static int player_count = 1;
+static int player_count = 20;
 
 void PlayerModule()
 {
@@ -90,7 +90,7 @@ void PlayerModule()
 		}
 	}
 	else {
-		player_count = 1;
+		player_count = 20;
 	}
 
 	player.InputPoint(prect);
