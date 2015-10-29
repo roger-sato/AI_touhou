@@ -43,10 +43,11 @@ void TouhouAILogic::ControlManager::Proc()
 	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
 	recog.DrawRectangle(screen_image, bullets.BulletsRect() , cv::Scalar(255, 0, 255));
 	
+	auto p = player.MidPoint();
+	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player,screen_image);
+
 	cv::imshow("matching", screen_image);
 
-	auto p = player.Point();
-	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player);
 }
 
 void TouhouAILogic::ControlManager::GetPrintScreenModule()
@@ -90,13 +91,13 @@ void BulletModule()
 {
 	//ëSëÃîÕàÕíTçı
 
-	const int hai = 500;
+	const int hai = 450;
 	const int wid = 400;
 
 	std::vector<cv::Mat> bullet_planes;
 
 	auto p_p = player.Point();
-	p_p.Set(std::max(p_p.X() - (wid / 2 - 20), 0), std::max(p_p.Y() - (hai * 4 / 5), 0));
+	p_p.Set(std::max(p_p.X() - (wid / 2 - 20), 0), std::max(p_p.Y() - (hai * 3 / 4), 0));
 
 	cv::Rect rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
 
@@ -131,10 +132,9 @@ void BulletModule()
 
 		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
 		
-		auto p = x.Rect(); 
-		cv::Point pp(p.x, p.y);
+		auto p = x.MidPoint(); 
 		
-		cv::line(screen_image, pp,pp + 5 * x.MoveVec(), cv::Scalar(0, 255, 255),5);
+		cv::line(screen_image, p,p + 5 * x.MoveVec(), cv::Scalar(0, 255, 255),5);
 		
 		for (auto xy : screen_planes) {
 			bullet_planes.push_back(xy(b_p));

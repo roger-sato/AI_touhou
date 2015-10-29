@@ -14,8 +14,10 @@ namespace TouhouAILogic {
 	public:
 		Player();
 		Vec2D Point();
+		Vec2D MidPoint();
 		void Move(Vec2D);
 		void InputPoint(std::vector<cv::Rect>);
+		
 
 		bool IsRegognited() { return is_recognited; }
 	};

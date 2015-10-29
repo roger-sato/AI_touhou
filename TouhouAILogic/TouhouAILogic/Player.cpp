@@ -12,8 +12,31 @@ TouhouAILogic::Vec2D TouhouAILogic::Player::Point()
 	return point;
 }
 
+TouhouAILogic::Vec2D TouhouAILogic::Player::MidPoint()
+{
+	return Vec2D(point.X() + 13,point.Y() + 20);
+}
+
 void TouhouAILogic::Player::Move(Vec2D v)
 {
+	int k = 11;
+	if (v.X() > 0) {
+		if (v.Y() > 0) {
+			v = Vec2D(1 * k, 1 * k);
+		}
+		else if (v.Y() < 0) {
+			v = Vec2D(1 * k, -1 * k);
+		}
+	}
+	else if(v.X() < 0) {
+		if (v.Y() > 0) {
+			v = Vec2D(-1 * k, 1 * k);
+		}
+		else if (v.Y() < 0) {
+			v = Vec2D(-1 * k, -1 * k);
+		}
+	}
+
 	point.Add(v);
 	move.MovePlayer(v);
 }

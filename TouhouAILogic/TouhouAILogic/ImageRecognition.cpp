@@ -51,7 +51,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		return;
 
 
-	for (int i = 0; i < 3; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		auto xy = player_image_move[player_move_i];
 		player_move_i = ++player_move_i % player_image_move.size();
 
@@ -65,7 +65,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 	}
 
 
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		auto xy = player_image[player_i];
 		player_i = ++player_i % player_image.size();
 
