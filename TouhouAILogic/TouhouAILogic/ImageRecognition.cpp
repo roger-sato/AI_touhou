@@ -23,6 +23,7 @@ void TouhouAILogic::ImageRecognition::Proc()
 {
 	WindowPrint wp;
 	
+
 	cv::Mat img;
 	wp.HBITMAPToMat(img);
 
@@ -30,7 +31,7 @@ void TouhouAILogic::ImageRecognition::Proc()
 
 	cv::split(img, planes);
 	
-	EnemyRecognition(img,planes , Vec2D(0,0));
+	EnemyRecognition(img, planes, Vec2D(0, 0));
 	BulletRecognition(img, planes, Vec2D(0, 0));
 	PlayerRecognition(img, planes, Vec2D(0, 0));
 
@@ -92,10 +93,11 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 	if (bullet_image.empty())
 		return;
 
-	auto xy = bullet_image[bullet_i];
-	bullet_i = ++bullet_i % bullet_image.size();
+	
+	for (int i = 0; i < 3;++i) {
+		auto xy = bullet_image[bullet_i];
+		bullet_i = ++bullet_i % bullet_image.size();
 
-	for (auto xy : bullet_image) {
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
@@ -119,7 +121,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 	cv::Mat result;
 	TemplateMatch(planes, temp, result);
 
-	SearchMatch(result, 0.9f, temp_maxpt, temp, p);
+	SearchMatch(result, 0.75f, temp_maxpt, temp, p);
 
 	for (auto y : temp_maxpt) {
 		Bullet b(temp);

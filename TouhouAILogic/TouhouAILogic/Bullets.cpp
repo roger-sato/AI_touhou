@@ -8,6 +8,7 @@ static bool ok(true), notok(false);
 
 TouhouAILogic::Bullets::Bullets()
 {
+
 }
 
 std::list<Bullet> TouhouAILogic::Bullets::OutRecoBullets()
