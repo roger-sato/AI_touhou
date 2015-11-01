@@ -19,6 +19,14 @@ void TemplateMatch(std::vector<cv::Mat>& planes, std::pair<cv::Mat, std::string>
 void SearchMatch(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
 void SearchMatch_p(const cv::Mat& result, float threshold, std::vector<cv::Rect>& maxpt, std::pair<cv::Mat, std::string> xy, TouhouAILogic::Vec2D p);
 
+void TouhouAILogic::ImageRecognition::Init()
+{
+	ImageData::Instance().ImageMap("player", player_image);
+	ImageData::Instance().ImageMap("move_player", player_image_move);
+
+	ImageData::Instance().ImageMap("bullet", bullet_image);
+}
+
 void TouhouAILogic::ImageRecognition::Proc()
 {
 	WindowPrint wp;
@@ -39,13 +47,9 @@ void TouhouAILogic::ImageRecognition::Proc()
 	cv::imshow("matching", img);
 }
 
+
 void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes, Vec2D p)
 {
-	std::vector<std::pair<cv::Mat, std::string>> player_image;
-	std::vector<std::pair<cv::Mat, std::string>> player_image_move;
-	ImageData::Instance().ImageMap("player", player_image);
-	ImageData::Instance().ImageMap("move_player", player_image_move);
-
 	player_maxpt.clear();
 
 	if (player_image.empty())
@@ -83,12 +87,8 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	std::vector<std::pair<cv::Mat, std::string>> bullet_image;
-	ImageData::Instance().ImageMap("bullet",bullet_image);
-
 	bullet_maxpt.clear();
 	bullet.clear();
-
 
 	if (bullet_image.empty())
 		return;
@@ -110,8 +110,6 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 			bullet.push_back(b);
 		}
 	}
-
-
 }
 
 void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, Vec2D p)
@@ -129,7 +127,6 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 
 		bullet.push_back(b);
 		bullet_maxpt.push_back(y);
-		
 	}
 	
 }
@@ -164,26 +161,6 @@ TouhouAILogic::WindowPrint screen_shot;
 void TouhouAILogic::ImageRecognition::ScreenShot()
 {
 	screen_shot.Print();
-}
-
-std::vector<cv::Rect> TouhouAILogic::ImageRecognition::PlayerRect()
-{
-	return player_maxpt;
-}
-
-std::vector<cv::Rect> TouhouAILogic::ImageRecognition::EnemyRect()
-{
-	return enemy_maxpt;
-}
-
-std::vector<cv::Rect> TouhouAILogic::ImageRecognition::BulletRect()
-{
-	return bullet_maxpt;
-}
-
-std::vector<Bullet> TouhouAILogic::ImageRecognition::Bullets()
-{
-	return bullet;
 }
 
 void TouhouAILogic::ImageRecognition::DrawRectangle(cv::Mat& img, std::vector<cv::Rect>& maxpt , cv::Scalar color)

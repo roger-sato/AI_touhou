@@ -13,12 +13,18 @@ namespace TouhouAILogic {
 		std::vector<cv::Rect> bullet_maxpt;
 		std::vector<Bullet> bullet;
 
+
+		std::vector<std::pair<cv::Mat, std::string>> player_image;
+		std::vector<std::pair<cv::Mat, std::string>> player_image_move;
+		std::vector<std::pair<cv::Mat, std::string>> bullet_image;
+
 		int player_i = 0;
 		int player_move_i = 0;
 		int bullet_i = 0;
 		int enemy_i = 0;
 
 	public:
+		void Init();
 		void Proc();
 		void PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p);
 		void BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p);
