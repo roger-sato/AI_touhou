@@ -90,18 +90,19 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 	bullet_maxpt.clear();
 	bullet.clear();
 
+
 	if (bullet_image.empty())
 		return;
 
 	
-	for (int i = 0; i < 3;++i) {
+	for (int i = 0; i < 3; ++i) {
 		auto xy = bullet_image[bullet_i];
 		bullet_i = ++bullet_i % bullet_image.size();
 
 		cv::Mat result;
 		TemplateMatch(planes, xy, result);
 
-		SearchMatch(result, 0.75f, bullet_maxpt ,xy , p);
+		SearchMatch(result, 0.75f, bullet_maxpt, xy, p);
 
 		for (auto y : bullet_maxpt) {
 			Bullet b(xy);
@@ -112,8 +113,9 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 	}
 }
 
-void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, Vec2D p)
+void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, std::vector<Bullet>& bu,Vec2D p)
 {
+	/*
 	std::vector<cv::Rect> temp_maxpt;
 
 	cv::Mat result;
@@ -125,10 +127,10 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 		Bullet b(temp);
 		b.InputRect(y);
 
-		bullet.push_back(b);
+		bu.push_back(b);
 		bullet_maxpt.push_back(y);
 	}
-	
+	*/
 }
 
 

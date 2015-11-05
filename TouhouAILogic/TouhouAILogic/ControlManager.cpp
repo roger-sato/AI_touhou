@@ -2,6 +2,7 @@
 #include "ControlManager.h"
 #include "Bullets.h"
 #include "PlayerAlgorithm.h"
+#include "ImageRecognitionMgr.h"
 
 using namespace TouhouAILogic;
 
@@ -12,6 +13,7 @@ static cv::Mat screen_image;
 static std::vector<cv::Mat> screen_planes;
 static Bullets bullets;
 static PlayerAlgorithm player_alg;
+
 
 void PlayerModule();
 void EnemyModule();
@@ -25,7 +27,7 @@ TouhouAILogic::ControlManager::ControlManager()
 void TouhouAILogic::ControlManager::Proc()
 {
 	GetPrintScreenModule();
-
+	/*
 	player_th = gcnew Thread(gcnew ThreadStart(PlayerModule));
 	bullet_th = gcnew Thread(gcnew ThreadStart(BulletModule));
 	
@@ -45,6 +47,9 @@ void TouhouAILogic::ControlManager::Proc()
 	
 	auto p = player.MidPoint();
 	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player,screen_image);
+	*/
+	recogmg.Init();
+	recogmg.Recognition(screen_image, player);
 
 	cv::imshow("matching", screen_image);
 
@@ -151,7 +156,7 @@ void BulletModule()
 			bullet_planes.push_back(xy(b_p));
 		}
 
-		recog.BulletRecognitionInd(screen_image, x.Image(), bullet_planes, Vec2D(b_p.x, b_p.y));
+		//recog.BulletRecognitionInd(screen_image, x.Image(), bullet_planes, Vec2D(b_p.x, b_p.y));
 	}
 
 	bullets.InputRecoBullets(recog.Bullets());

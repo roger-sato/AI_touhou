@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cliext/vector>
 
 namespace TouhouAILogic {
 
@@ -9,6 +10,7 @@ namespace TouhouAILogic {
 	class Player;
 
 	ref class ImageRecognitionMgr {
+		cliext::vector<Thread^> bullet_th;
 		Thread^ player_th;
 
 	public:
