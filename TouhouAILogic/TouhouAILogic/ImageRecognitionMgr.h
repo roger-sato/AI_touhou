@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <cliext/vector>
 
 namespace TouhouAILogic {
 
@@ -10,7 +9,15 @@ namespace TouhouAILogic {
 	class Player;
 
 	ref class ImageRecognitionMgr {
-		cliext::vector<Thread^> bullet_th;
+		Thread^ bullet_th1;
+		Thread^ bullet_th2;
+		Thread^ bullet_th3;
+		Thread^ bullet_th4;
+		Thread^ bullet_th5;
+		Thread^ bullet_th6;
+		Thread^ bullet_th7;
+		Thread^ bullet_th8;
+
 		Thread^ player_th;
 
 	public:
@@ -24,6 +31,11 @@ namespace TouhouAILogic {
 		void BulletRect(std::vector<cv::Rect>&);
 		void Bullets(std::vector<Bullet>&);
 
+	private:
+		void BulletThreadSet();
+		void BulletThreadStart(cv::Mat& ,Player&);
+		void BulletThreadJoin();
+			
 	};
 
 }

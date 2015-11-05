@@ -25,7 +25,6 @@ namespace TouhouAILogic {
 
 	public:
 		void Init();
-		void Proc();
 		void PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p);
 		void BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p);
 		void BulletRecognitionInd(cv::Mat& img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, std::vector<Bullet>& bullet_,Vec2D p);
@@ -33,10 +32,6 @@ namespace TouhouAILogic {
 		void DrawRectangle(cv::Mat& img, std::vector<cv::Rect>& maxpt, cv::Scalar color);
 		void ScreenShot();
 
-		std::vector<cv::Rect> PlayerRect();
-		std::vector<cv::Rect> EnemyRect();
-		std::vector<cv::Rect> BulletRect();
-		std::vector<Bullet> Bullets();
 	};
 
 }

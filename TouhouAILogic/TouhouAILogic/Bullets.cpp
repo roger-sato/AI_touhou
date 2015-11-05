@@ -33,7 +33,7 @@ static std::map<std::string, cv::Rect> table2;
 
 void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 {
-
+	
 	for (auto x : b) {
 		auto hash = bullet_hash.GetHash(x.Rect());
 		auto hash2 = bullet_hash.GetHash2(x.Rect());
@@ -83,7 +83,7 @@ void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 		}
 	}
 	
-
+	
 
 }
 

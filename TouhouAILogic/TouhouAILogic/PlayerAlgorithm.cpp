@@ -2,7 +2,6 @@
 #include "PlayerAlgorithm.h"
 #include "SendMove.h"
 #include "Bullet.h"
-#include "Debug.h"
 #include "Player.h"
 
 using namespace TouhouAILogic;

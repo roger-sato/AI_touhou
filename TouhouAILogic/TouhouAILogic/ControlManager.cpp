@@ -66,6 +66,7 @@ static int player_count = 20;
 
 void PlayerModule()
 {
+	/*
 	auto p_p = player.Point();
 
 	const int h = 200;
@@ -100,7 +101,7 @@ void PlayerModule()
 
 	player.InputPoint(prect);
 
-
+	*/
 }
 
 static int time_i = 0;
@@ -108,7 +109,7 @@ static int time_i = 0;
 void BulletModule()
 {
 	//‘S‘Ì”ÍˆÍ’Tõ
-
+	/*
 	const int hai = 300;
 	const int wid = 300;
 
@@ -160,7 +161,7 @@ void BulletModule()
 	}
 
 	bullets.InputRecoBullets(recog.Bullets());
-	
+	*/
 }
 
 
