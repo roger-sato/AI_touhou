@@ -34,11 +34,10 @@ ref struct State
 {
 	Player& player; //最初の整数
 	Mutex^ mtx; //ロック用のハンドル
-	std::pair<cv::Mat,std::string>& img;
 	int n;
 
-	State(int _n ,Player& _player, Mutex^ _mtx,std::pair<cv::Mat,std::string>& _img)
-		: player(_player), mtx(_mtx),img(_img), n(_n){}
+	State(int _n ,Player& _player, Mutex^ _mtx)
+		: player(_player), mtx(_mtx), n(_n){}
 };
 
 TouhouAILogic::ImageRecognitionMgr::ImageRecognitionMgr()
@@ -50,13 +49,10 @@ void TouhouAILogic::ImageRecognitionMgr::Init()
 	ImageData::Instance().ImageMap("player", player_image);
 	ImageData::Instance().ImageMap("move_player", player_image_move);
 	ImageData::Instance().ImageMap("bullet", bullet_image);
-
-	//bullet_th.reserve(bullet_image.size());
 }
 
 void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& player)
 {
-	
 //	player_th = gcnew Thread(gcnew ThreadStart(PlayerRecognition));
 	
 	screen_image = screen;
@@ -78,7 +74,6 @@ void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& pl
 	
 }
 
-
 static void BulletRecognition(System::Object^ s)
 {
 	
@@ -86,11 +81,12 @@ static void BulletRecognition(System::Object^ s)
 
 	std::vector<Bullet> b;
 
-	recog.BulletRecognitionInd(screen_image, state->img, bullet_planes, b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+	cv::imshow("aaa", bullet_image[state->n-1].first);
+	//out << state->img.second << std::endl;
+
+	//recog.BulletRecognitionInd(screen_image, state->img, bullet_planes, b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
 
 	state->mtx->WaitOne();
-
-	out << state->n << std::endl;
 
 	for (auto x : b) {
 		bullets.push_back(x);
@@ -149,21 +145,20 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadStart(cv::Mat& screen_image
 
 	bullet_planes.clear();
 	bullets.clear();
-	bullet_planes.clear();
 
 	for (auto x : screen_planes) {
 		bullet_planes.push_back(x(bullet_search_rect));
 	}
 
 
-	bullet_th1->Start(gcnew State(1,player, mtx, bullet_image[0]));
-	bullet_th2->Start(gcnew State(2,player, mtx, bullet_image[1]));
-	bullet_th3->Start(gcnew State(3,player, mtx, bullet_image[2]));
-	bullet_th4->Start(gcnew State(4,player, mtx, bullet_image[3]));
-	bullet_th5->Start(gcnew State(5,player, mtx, bullet_image[4]));
-	bullet_th6->Start(gcnew State(6,player, mtx, bullet_image[5]));
-	bullet_th7->Start(gcnew State(7,player, mtx, bullet_image[6]));
-	bullet_th8->Start(gcnew State(8,player, mtx, bullet_image[7]));
+	bullet_th1->Start(gcnew State(1,player, mtx));
+	bullet_th2->Start(gcnew State(2,player, mtx));
+	bullet_th3->Start(gcnew State(3,player, mtx));
+	bullet_th4->Start(gcnew State(4,player, mtx));
+	bullet_th5->Start(gcnew State(5,player, mtx));
+	bullet_th6->Start(gcnew State(6,player, mtx));
+	bullet_th7->Start(gcnew State(7,player, mtx));
+	bullet_th8->Start(gcnew State(8,player, mtx));
 }
 
 void TouhouAILogic::ImageRecognitionMgr::BulletThreadJoin()

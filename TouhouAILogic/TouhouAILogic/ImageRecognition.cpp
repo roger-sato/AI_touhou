@@ -67,7 +67,6 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 
 void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	/*
 	bullet_maxpt.clear();
 	bullet.clear();
 
@@ -92,12 +91,11 @@ void TouhouAILogic::ImageRecognition::BulletRecognition(cv::Mat& img, std::vecto
 			bullet.push_back(b);
 		}
 	}
-	*/
+	
 }
 
 void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, std::vector<Bullet>& bu,Vec2D p)
 {
-	/*
 	std::vector<cv::Rect> temp_maxpt;
 
 	cv::Mat result;
@@ -112,7 +110,6 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 		bu.push_back(b);
 		bullet_maxpt.push_back(y);
 	}
-	*/
 }
 
 
