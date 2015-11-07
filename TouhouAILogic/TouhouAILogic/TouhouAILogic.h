@@ -14,9 +14,5 @@ namespace TouhouAILogic {
 		void Init(System::IntPtr);
 		void ScreenShot();
 		void Up();
-		void Down();
-		void Right();
-		void Left();
-		void Enter();
 	};
 }

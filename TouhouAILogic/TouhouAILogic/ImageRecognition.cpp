@@ -110,6 +110,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 		bu.push_back(b);
 		bullet_maxpt.push_back(y);
 	}
+	
 }
 
 

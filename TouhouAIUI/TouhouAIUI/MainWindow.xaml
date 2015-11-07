@@ -12,11 +12,7 @@
                 Click="button_Click"/>
         <Button x:Name="button1" Content="ファイル参照" HorizontalAlignment="Left" Margin="123,131,0,0" VerticalAlignment="Top" Width="132" Height="54"
                 Click="button1_Click"/>
-        <Button x:Name="Enter" Content="Enter" HorizontalAlignment="Left" Margin="25,197,0,0" VerticalAlignment="Top" Width="75" Click="Enter_Click"/>
         <Button x:Name="Up" Content="↑" HorizontalAlignment="Left" Margin="123,251,0,0" VerticalAlignment="Top" Width="26" Click="Up_Click"/>
-        <Button x:Name="Right" Content="→" HorizontalAlignment="Left" Margin="160,289,0,0" VerticalAlignment="Top" Width="26" Click="Right_Click"/>
-        <Button x:Name="Down" Content="↓" HorizontalAlignment="Left" Margin="123,324,0,0" VerticalAlignment="Top" Width="26" Click="Down_Click"/>
-        <Button x:Name="Left" Content="←" HorizontalAlignment="Left" Margin="84,289,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="-2.942,0.417" Click="Left_Click"/>
         <Button x:Name="GetProcess" Content="プロセス取得" HorizontalAlignment="Left" Margin="25,131,0,0" VerticalAlignment="Top" Width="85" Height="54" Click="GetProcess_Click"/>
         <Button x:Name="Test" Content="Test" HorizontalAlignment="Left" Margin="25,243,0,0" VerticalAlignment="Top" Width="75" Click="Test_Click"/>
         <Button x:Name="mach" Content="mach" HorizontalAlignment="Left" Margin="160,243,0,0" VerticalAlignment="Top" Width="75" Click="mach_Click"/>

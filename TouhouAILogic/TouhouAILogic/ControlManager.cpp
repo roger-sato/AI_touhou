@@ -19,9 +19,13 @@ void PlayerModule();
 void EnemyModule();
 void BulletModule();
 
+void TouhouAILogic::ControlManager::Init()
+{
+	recogmg.Init();
+}
+
 TouhouAILogic::ControlManager::ControlManager()
 {
-
 }
 
 void TouhouAILogic::ControlManager::Proc()
@@ -48,7 +52,6 @@ void TouhouAILogic::ControlManager::Proc()
 	auto p = player.MidPoint();
 	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player,screen_image);
 	*/
-	recogmg.Init();
 	recogmg.Recognition(screen_image, player);
 
 	cv::imshow("matching", screen_image);

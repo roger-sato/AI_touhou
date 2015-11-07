@@ -3,10 +3,12 @@
 #include "stdafx.h"
 
 #include "TouhouAILogic.h"
+#include "Stdafx.h"
 #include "KeyManage.h"
 #include "ImageRecognition.h"
 #include "SystemData.h"
 #include "ImageData.h"
+
 
 TouhouAILogic::ImageRecognition screen_shot;
 
@@ -38,22 +40,3 @@ void TouhouAILogic::MainProc::Up()
 	KeyManage::Instance().SendUp();
 }
 
-void TouhouAILogic::MainProc::Down()
-{
-	KeyManage::Instance().SendDown();
-}
-
-void TouhouAILogic::MainProc::Right()
-{
-	KeyManage::Instance().SendRight();
-}
-
-void TouhouAILogic::MainProc::Left()
-{
-	KeyManage::Instance().SendLeft();
-}
-
-void TouhouAILogic::MainProc::Enter()
-{
-	KeyManage::Instance().SendEnter();
-}

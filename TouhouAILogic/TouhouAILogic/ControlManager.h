@@ -20,6 +20,7 @@ namespace TouhouAILogic {
 		Thread^ bullet_th;
 
 	public:
+		void Init();
 		ControlManager();
 		void Proc();
 
