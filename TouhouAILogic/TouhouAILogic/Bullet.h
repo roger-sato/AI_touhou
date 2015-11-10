@@ -31,6 +31,8 @@ namespace TouhouAILogic {
 		std::string GetHash() { return hash; }
 		void SetHash(std::string h) { hash = h; }
 
+		Bullet& operator=(const Bullet& b) { (*this) = b; return *this; }
+
 		void SetMoveVec(cv::Point);
 		cv::Point MoveVec();
 

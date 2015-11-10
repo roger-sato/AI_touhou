@@ -28,7 +28,7 @@ void TouhouAILogic::ImageRecognition::Init()
 }
 
 
-void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes, Vec2D p)
+void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes,std::vector<cv::Rect>& player_maxpt ,  Vec2D p)
 {
 	player_maxpt.clear();
 

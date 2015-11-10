@@ -48,11 +48,20 @@ void TouhouAILogic::ControlManager::Proc()
 
 	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
 	recog.DrawRectangle(screen_image, bullets.BulletsRect() , cv::Scalar(255, 0, 255));
-	
-	auto p = player.MidPoint();
-	player_alg.PlayerUpdate(cv::Point(p.X(),p.Y()),bullets.OutRecoBullets(),player,screen_image);
 	*/
 	recogmg.Recognition(screen_image, player);
+
+	std::vector<cv::Rect> prect;
+	recogmg.PlayerRect(prect);
+	player.InputPoint(prect);
+
+	std::vector<Bullet> bb;
+	recogmg.Bullets(bb);
+	bullets.InputRecoBullets(bb);
+
+	auto p = player.MidPoint();
+
+	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(), player, screen_image);
 
 	cv::imshow("matching", screen_image);
 
@@ -64,8 +73,6 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 
 	cv::split(screen_image, screen_planes);
 }
-
-static int player_count = 20;
 
 void PlayerModule()
 {
