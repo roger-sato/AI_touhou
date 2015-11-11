@@ -133,7 +133,7 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 	
 }
 
-static int player_count = 20;
+static int player_count = 200;
 
 void PlayerRecognition()
 {
@@ -169,7 +169,7 @@ void PlayerRecognition()
 		}
 	}
 	else {
-		player_count = 20;
+		player_count = 200;
 	}
 
 }
@@ -178,11 +178,11 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadStart(cv::Mat& screen_image
 {
 	Mutex^ mtx = gcnew Mutex;
 
-	const int hai = 300;
-	const int wid = 300;
+	const int hai = 200;
+	const int wid = 200;
 
-	auto p_p = player.Point();
-	p_p.Set(std::max(p_p.X() - (wid / 2 - 20), 0), std::max(p_p.Y() - (hai * 3 / 4), 0));
+	auto p_p = player.MidPoint();
+	p_p.Set(std::max(p_p.X() - (wid / 2 ), 0), std::max(p_p.Y() - (hai /2), 0));
 
 	bullet_search_rect = cv::Rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
 

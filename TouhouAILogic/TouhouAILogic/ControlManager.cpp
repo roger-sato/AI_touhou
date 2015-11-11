@@ -50,13 +50,13 @@ void TouhouAILogic::ControlManager::Proc()
 
 	auto p = player.MidPoint();
 
-	debug_th->Start();
+	//debug_th->Start();
 
 	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(), player, screen_image);
 
 	cv::imshow("matching", screen_image);
 
-	debug_th->Join();
+	//debug_th->Join();
 
 }
 

@@ -9,7 +9,6 @@
 #include "SystemData.h"
 #include "ImageData.h"
 
-
 TouhouAILogic::ImageRecognition screen_shot;
 
 System::String^ TouhouAILogic::MainProc::Test()
