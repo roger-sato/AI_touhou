@@ -35,6 +35,11 @@ void TouhouAILogic::MainProc::ScreenShot()
 	screen_shot.ScreenShot();
 }
 
+void TouhouAILogic::MainProc::DebugSave()
+{
+	cm.DebugSave();
+}
+
 void TouhouAILogic::MainProc::Up()
 {
 	KeyManage::Instance().SendUp();

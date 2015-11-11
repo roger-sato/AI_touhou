@@ -72,12 +72,17 @@ void TouhouAILogic::Bullets::InputRecoBullets(std::vector<Bullet> b)
 				table[hash] = notok;
 			}
 			else {
+				table.erase(hash);
+				x = bullets.erase(x);
+				x = std::prev(x);
+				/*
 				x->Update(false);
 				if (x->IsDead()) {
 					table.erase(hash);
 					x = bullets.erase(x);
 					x = std::prev(x);
 				}
+				*/
 			}
 
 		}

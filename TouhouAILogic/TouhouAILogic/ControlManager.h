@@ -6,8 +6,6 @@
 
 using namespace System::Threading;
 
-void PlayerModule();
-void EnemyModule();
 void BulletModule();
 
 namespace TouhouAILogic {
@@ -15,13 +13,12 @@ namespace TouhouAILogic {
 	ref class ControlManager {
 		ImageRecognitionMgr recogmg;
 
-		Thread^ player_th;
-		Thread^ enemy_th;
-		Thread^ bullet_th;
+		Thread^ debug_th;
 
 	public:
 		void Init();
 		ControlManager();
+		void DebugSave();
 		void Proc();
 
 	private:

@@ -16,6 +16,7 @@ namespace TouhouAIUI
     {
         private OpenFileDialog ofd;
         System.Diagnostics.Process p;
+        Timer main_timer = new Timer();
 
         TouhouAILogic.MainProc main_proc;
 
@@ -71,12 +72,9 @@ namespace TouhouAIUI
             Interaction.AppActivate(p.Id);
             System.Threading.Thread.Sleep(100);
 
-            Timer timer = new Timer();
-
-            timer.Tick += new EventHandler(MyProc);
-            timer.Interval = 30;
-            timer.Start();
-
+            main_timer.Tick += new EventHandler(MyProc);
+            main_timer.Interval = 30;
+            main_timer.Start();
         }
 
         private void MyProc(object sender, EventArgs e)
@@ -111,5 +109,14 @@ namespace TouhouAIUI
             main_proc.ScreenShot();
         }
 
+        private void DebugSave_Click(object sender, RoutedEventArgs e)
+        {
+            main_proc.DebugSave();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            main_timer.Stop();
+        }
     }
 }

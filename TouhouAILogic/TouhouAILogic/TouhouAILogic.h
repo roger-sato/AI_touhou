@@ -13,6 +13,7 @@ namespace TouhouAILogic {
 		System::String^ Test();
 		void Init(System::IntPtr);
 		void ScreenShot();
+		void DebugSave();
 		void Up();
 	};
 }

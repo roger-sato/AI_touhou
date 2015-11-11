@@ -74,7 +74,6 @@ void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& _p
 	BulletThreadJoin();
 	player_th->Join();
 
-	recog.DrawRectangle(screen,bullet_rect, cv::Scalar(0, 255, 0));
 	
 }
 

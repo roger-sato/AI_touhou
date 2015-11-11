@@ -14,10 +14,13 @@ static std::vector<cv::Mat> screen_planes;
 static Bullets bullets;
 static PlayerAlgorithm player_alg;
 
+static int num = 0;
 
-void PlayerModule();
-void EnemyModule();
-void BulletModule();
+bool debug = false;
+
+
+
+void SaveScreenImage();
 
 void TouhouAILogic::ControlManager::Init()
 {
@@ -31,24 +34,8 @@ TouhouAILogic::ControlManager::ControlManager()
 void TouhouAILogic::ControlManager::Proc()
 {
 	GetPrintScreenModule();
-	/*
-	player_th = gcnew Thread(gcnew ThreadStart(PlayerModule));
-	bullet_th = gcnew Thread(gcnew ThreadStart(BulletModule));
-	
-	if (!player_th->IsAlive) {
-		player_th->Start();
-	}
+	debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
 
-	if (!bullet_th->IsAlive) {
-		bullet_th->Start();
-	}
-		
-	player_th->Join();
-	bullet_th->Join();
-
-	recog.DrawRectangle(screen_image, recog.PlayerRect(), cv::Scalar(0, 255, 0));
-	recog.DrawRectangle(screen_image, bullets.BulletsRect() , cv::Scalar(255, 0, 255));
-	*/
 	recogmg.Recognition(screen_image, player);
 
 	std::vector<cv::Rect> prect;
@@ -59,12 +46,31 @@ void TouhouAILogic::ControlManager::Proc()
 	recogmg.Bullets(bb);
 	bullets.InputRecoBullets(bb);
 
+	recog.DrawRectangle(screen_image, bullets.BulletsRect(), cv::Scalar(0, 255, 0));
+
 	auto p = player.MidPoint();
+
+	debug_th->Start();
 
 	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(), player, screen_image);
 
 	cv::imshow("matching", screen_image);
 
+	debug_th->Join();
+
+}
+
+void SaveScreenImage()
+{
+	if (debug) {
+		cv::imwrite("./Debug/debug" + std::to_string(num) + ".png", screen_image);
+		num++;
+	}
+}
+
+void TouhouAILogic::ControlManager::DebugSave()
+{
+	debug = true;
 }
 
 void TouhouAILogic::ControlManager::GetPrintScreenModule()
@@ -72,106 +78,6 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 	printer.HBITMAPToMat(screen_image);
 
 	cv::split(screen_image, screen_planes);
-}
-
-void PlayerModule()
-{
-	/*
-	auto p_p = player.Point();
-
-	const int h = 200;
-	const int w = 200;
-
-	p_p.Set(std::max(p_p.X() - (w/2 - 20), 0), std::max(p_p.Y() - h/2,0));
-	p_p.Set(std::min(p_p.X(), screen_image.cols - w), std::min(p_p.Y(),screen_image.rows - h));
-
-	cv::Rect roi_rect(p_p.X(),p_p.Y(), w , h);
-
-	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
-	cv::rectangle(screen_image, roi_rect, cv::Scalar(0,0,0), 2, 8, 0);
-
-	std::vector<cv::Mat> player_planes;
-
-	for (auto x : screen_planes) {
-		player_planes.push_back(x(roi_rect));
-	}
-
-	recog.PlayerRecognition(screen_image, player_planes , Vec2D(p_p.X(), p_p.Y()));
-
-	auto prect = recog.PlayerRect();
-
-	if (prect.empty()) {
-		if (--player_count < 0) {
-			prect.push_back(cv::Rect(357, 754,14,44));
-		}
-	}
-	else {
-		player_count = 20;
-	}
-
-	player.InputPoint(prect);
-
-	*/
-}
-
-static int time_i = 0;
-
-void BulletModule()
-{
-	//ëSëÃîÕàÕíTçı
-	/*
-	const int hai = 300;
-	const int wid = 300;
-
-	std::vector<cv::Mat> bullet_planes;
-
-	auto p_p = player.Point();
-	p_p.Set(std::max(p_p.X() - (wid / 2 - 20), 0), std::max(p_p.Y() - (hai * 3 / 4), 0));
-
-	cv::Rect rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
-
-	cv::rectangle(screen_image, rect, cv::Scalar(0, 0, 255), 2, 8, 0);
-
-	for (auto x : screen_planes) {
-		bullet_planes.push_back(x(rect));
-	}
-	if (time_i == 0) {
-		recog.BulletRecognition(screen_image, bullet_planes, Vec2D(rect.x, rect.y));
-
-		bullets.InputRecoBullets(recog.Bullets());
-	}
-	time_i = ++time_i % 2;
-
-	//Ç∑Ç≈Ç…å©Ç¬ÇØÇƒÇÈíeíTçı
-	
-	auto bull = bullets.OutRecoBullets();
-	const int sp_w = 50;
-	const int sp_h = 50;
-
-	for (auto x : bull) {
-		bullet_planes.clear();
-
-		auto b_p = x.Rect();
-		b_p.x = std::min(std::max(b_p.x - sp_w / 2, 0), screen_image.cols - (sp_w + b_p.width));
-		b_p.y = std::min(std::max(b_p.y - sp_h / 2, 0), screen_image.rows - (sp_h + b_p.height));
-		b_p.width += sp_w;
-		b_p.height += sp_h;
-
-		cv::rectangle(screen_image, b_p, cv::Scalar(0, 0, 0), 2, 8, 0);
-		
-		auto p = x.MidPoint(); 
-		
-		cv::line(screen_image, p,p + 5 * x.MoveVec(), cv::Scalar(0, 255, 255),5);
-		
-		for (auto xy : screen_planes) {
-			bullet_planes.push_back(xy(b_p));
-		}
-
-		//recog.BulletRecognitionInd(screen_image, x.Image(), bullet_planes, Vec2D(b_p.x, b_p.y));
-	}
-
-	bullets.InputRecoBullets(recog.Bullets());
-	*/
 }
 
 
