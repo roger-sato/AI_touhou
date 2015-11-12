@@ -24,7 +24,7 @@ void TouhouAILogic::MainProc::Init(System::IntPtr hw)
 	ImageData::Instance().Init();
 	cm.Init();
 
-	cv::Mat img = cv::imread("capture.bmp");
+	cv::Mat img = cv::imread("start.bmp");
 	cv::imshow("matching", img);
 }
 

@@ -12,9 +12,9 @@ SendMove send_move;
 void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& player, cv::Mat& screen_image);
 void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image);
 
-void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<Bullet>& bullet_rect,Player& player,cv::Mat& screen_image)
+void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image)
 {
-	Algorithm2(player_p,bullet_rect,player,screen_image);
+	Algorithm2(player_p, bullet_rect, player, screen_image);
 }
 
 void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& player, cv::Mat& screen_image) {
@@ -65,7 +65,7 @@ static int seach_table[4][4] = { 0 };
 
 void SetTable(cv::Point player_p, std::list<Bullet>& bullet_rect, int s = 70)
 {
-	memset(seach_table,0,sizeof(seach_table));
+	memset(seach_table, 0, sizeof(seach_table));
 
 	for (auto x : bullet_rect) {
 		auto dv = x.MidPoint() - player_p;
@@ -105,8 +105,8 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 
 
 	int s = 50;
-	
-	SetTable(player_p,bullet_rect,s);
+
+	SetTable(player_p, bullet_rect, s);
 
 	cv::Rect table_rect[4][4];
 
@@ -119,30 +119,28 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 			ry = std::min(std::max(0, ry), screen_image.rows);
 
 
-			table_rect[i][j] = cv::Rect(rx, ry, std::min(s, screen_image.cols -	rx) , std::min(s, screen_image.rows - ry));
+			table_rect[i][j] = cv::Rect(rx, ry, std::min(s, screen_image.cols - rx), std::min(s, screen_image.rows - ry));
 		}
 	}
 
 
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
-			cv::rectangle(screen_image, table_rect[i][j], cv::Scalar(0, 0, std::min(255, 50 * seach_table[i][j])),4);
+			cv::rectangle(screen_image, table_rect[i][j], cv::Scalar(0, 0, std::min(255, 50 * seach_table[i][j])), 4);
 		}
 	}
 
 	auto to_v = ToVect();
 
 
+	cv::Point defp(357, 724);
+	auto ss = defp - player_p;
+	cv::circle(screen_image, defp, std::sqrt(20000), cv::Scalar(0, 128, 255), 5);
+
 	if (to_v.x == 0 && to_v.y == 0 && bullet_rect.size() == 0) {
-		cv::Point defp(357, 724);
-		auto ss = defp - player_p;
-
-		cv::circle(screen_image, defp, std::sqrt(20000), cv::Scalar(0, 255, 255), 5);
-
 		if (ss.x*ss.x + ss.y*ss.y > 20000) {
 			to_v += ss;
 		}
-
 	}
 
 	cv::line(screen_image, player_p, player_p + to_v, cv::Scalar(0, 255, 255), 10);

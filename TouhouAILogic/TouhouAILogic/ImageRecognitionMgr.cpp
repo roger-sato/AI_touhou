@@ -19,10 +19,13 @@ static std::vector<std::pair<cv::Mat, std::string>> bullet_image;
 
 static cv::Rect bullet_search_rect;
 
-static std::vector<cv::Mat> bullet_planes;
 static cv::Mat screen_image;
 static ImageRecognition recog;
 static std::vector<cv::Mat> screen_planes;
+
+static std::vector<cv::Mat> bullet_image_pyramid;
+static std::vector<std::vector<cv::Mat>> bullet_planes_pyramid;
+
 static Player player;
 
 static void PlayerRecognition();
@@ -88,8 +91,23 @@ static void BulletRecognition(System::Object^ s)
 	auto img = bullet_image[state->n - 1];
 	state->mtx->ReleaseMutex();
 
-	recog.BulletRecognitionInd(screen_image, img , bullet_planes, b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+	std::vector<cv::Mat> bullet_p;
+	cv::buildPyramid(img.first,bullet_p,2);
+
+
+	recog.BulletRecognitionInd(screen_image, std::pair<cv::Mat,std::string>(bullet_p[2],img.second) , bullet_planes_pyramid[2], b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
 	
+	if (!b.empty()) {
+		b.clear();
+		recog.BulletRecognitionInd(screen_image, std::pair<cv::Mat, std::string>(bullet_p[1], img.second), bullet_planes_pyramid[1], b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+
+		if (!b.empty()) {
+			b.clear();
+			recog.BulletRecognitionInd(screen_image, std::pair<cv::Mat, std::string>(bullet_p[0], img.second), bullet_planes_pyramid[0], b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+
+		}
+	}
+
 	state->mtx->WaitOne();
 	for (auto x : b) {
 		bullets.push_back(x);
@@ -133,7 +151,7 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 	
 }
 
-static int player_count = 200;
+static int player_count = 50;
 
 void PlayerRecognition()
 {
@@ -148,7 +166,8 @@ void PlayerRecognition()
 	cv::Rect roi_rect(p_p.X(), p_p.Y(), w, h);
 
 	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
-	cv::rectangle(screen_image, roi_rect, cv::Scalar(0, 0, 0), 2, 8, 0);
+	//cv::rectangle(screen_image, roi_rect, cv::Scalar(0, 0, 0), 2, 8, 0);
+	
 
 	std::vector<cv::Mat> player_planes;
 
@@ -160,8 +179,10 @@ void PlayerRecognition()
 	recog.PlayerRecognition(screen_image, player_planes, player_rect, Vec2D(p_p.X(), p_p.Y()));
 
 	if (!player_rect.empty()) {
-		cv::rectangle(screen_image, player_rect[0], cv::Scalar(255, 0, 0), 2, 8, 0);
+		cv::rectangle(screen_image, player_rect[0], cv::Scalar(0, 255, 0), 2, 8, 0);
 	}
+
+	out << player_count << std::endl;
 
 	if (player_rect.empty()) {
 		if (--player_count < 0) {
@@ -169,7 +190,7 @@ void PlayerRecognition()
 		}
 	}
 	else {
-		player_count = 200;
+		player_count = 50;
 	}
 
 }
@@ -186,21 +207,25 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadStart(cv::Mat& screen_image
 
 	bullet_search_rect = cv::Rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
 
-	cv::rectangle(screen_image, bullet_search_rect, cv::Scalar(0, 0, 255), 2, 8, 0);
+	//cv::rectangle(screen_image, bullet_search_rect, cv::Scalar(0, 0, 255), 2, 8, 0);
 
-
-	bullet_planes.clear();
 	bullets.clear();
 	bullet_rect.clear();
+	bullet_planes_pyramid.clear();
+	bullet_image_pyramid.clear();
 
+	cv::Mat bullet_image = screen_image(bullet_search_rect);
 
-	for (auto x : screen_planes) {
-		bullet_planes.push_back(x(bullet_search_rect));
+	cv::buildPyramid(bullet_image, bullet_image_pyramid, 2);
+
+	for (auto image : bullet_image_pyramid) {
+		cv::vector<cv::Mat> bullet_p;
+		cv::split(image,bullet_p);
+		bullet_planes_pyramid.push_back(bullet_p);
 	}
 
 
 	bullet_th1->Start(gcnew State(1,player, mtx));
-	
 	bullet_th2->Start(gcnew State(2,player, mtx));
 	bullet_th3->Start(gcnew State(3,player, mtx));
 	bullet_th4->Start(gcnew State(4,player, mtx));

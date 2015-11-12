@@ -48,6 +48,8 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("player", "player_18", "MG");
 
 	AddImage("player", "player_19", "MG");
+	
+
 	//AddImage("player", "player_20", "MG");
 	//AddImage("player", "player_21", "MG");
 }
