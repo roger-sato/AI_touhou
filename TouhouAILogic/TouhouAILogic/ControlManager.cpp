@@ -18,8 +18,6 @@ static int num = 0;
 
 bool debug = false;
 
-
-
 void SaveScreenImage();
 
 void TouhouAILogic::ControlManager::Init()
@@ -34,7 +32,7 @@ TouhouAILogic::ControlManager::ControlManager()
 void TouhouAILogic::ControlManager::Proc()
 {
 	GetPrintScreenModule();
-	debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
+	//debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
 
 	recogmg.Recognition(screen_image, player);
 

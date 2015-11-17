@@ -94,7 +94,6 @@ static void BulletRecognition(System::Object^ s)
 	std::vector<cv::Mat> bullet_p;
 	cv::buildPyramid(img.first,bullet_p,2);
 
-
 	recog.BulletRecognitionInd(screen_image, std::pair<cv::Mat,std::string>(bullet_p[2],img.second) , bullet_planes_pyramid[2], b, Vec2D(bullet_search_rect.x, bullet_search_rect.y));
 	
 	if (!b.empty()) {
@@ -166,7 +165,7 @@ void PlayerRecognition()
 	cv::Rect roi_rect(p_p.X(), p_p.Y(), w, h);
 
 	//ÉvÉåÉCÉÑÅ[íTçıîÕàÕ
-	//cv::rectangle(screen_image, roi_rect, cv::Scalar(0, 0, 0), 2, 8, 0);
+	cv::rectangle(screen_image, roi_rect, cv::Scalar(100, 100, 0), 2, 8, 0);
 	
 
 	std::vector<cv::Mat> player_planes;

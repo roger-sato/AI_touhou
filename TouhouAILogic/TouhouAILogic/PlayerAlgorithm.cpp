@@ -8,7 +8,6 @@ using namespace TouhouAILogic;
 
 SendMove send_move;
 
-
 void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& player, cv::Mat& screen_image);
 void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image);
 
@@ -135,10 +134,10 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 
 	cv::Point defp(357, 724);
 	auto ss = defp - player_p;
-	cv::circle(screen_image, defp, std::sqrt(20000), cv::Scalar(0, 128, 255), 5);
+	cv::circle(screen_image, defp, std::sqrt(30000), cv::Scalar(0, 128, 255), 5);
 
 	if (to_v.x == 0 && to_v.y == 0 && bullet_rect.size() == 0) {
-		if (ss.x*ss.x + ss.y*ss.y > 20000) {
+		if (ss.x*ss.x + ss.y*ss.y > 30000) {
 			to_v += ss;
 		}
 	}
