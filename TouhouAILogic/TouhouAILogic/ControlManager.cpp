@@ -32,7 +32,6 @@ TouhouAILogic::ControlManager::ControlManager()
 void TouhouAILogic::ControlManager::Proc()
 {
 	GetPrintScreenModule();
-	//debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
 
 	recogmg.Recognition(screen_image, player);
 
@@ -48,14 +47,14 @@ void TouhouAILogic::ControlManager::Proc()
 
 	auto p = player.MidPoint();
 
-	//debug_th->Start();
+	debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
+	debug_th->Start();
 
 	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(), player, screen_image);
 
 	cv::imshow("matching", screen_image);
 
-	//debug_th->Join();
-
+	debug_th->Join();
 }
 
 void SaveScreenImage()

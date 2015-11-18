@@ -3,7 +3,6 @@
 #include "ImageRecognitionMgr.h"
 #include "ImageData.h"
 #include "Player.h"
-#include "Debug.h"
 
 using namespace System::Threading;
 using namespace TouhouAILogic;
@@ -25,10 +24,7 @@ static std::vector<cv::Mat> screen_planes;
 
 static std::vector<cv::Mat> bullet_image_pyramid;
 static std::vector<std::vector<cv::Mat>> bullet_planes_pyramid;
-
-static Player player;
-
-static void PlayerRecognition();
+static void PlayerRecognition(System::Object^ s);
 //static void EnemyRecognition();
 static void BulletRecognition(System::Object^ s);
 
@@ -40,6 +36,14 @@ ref struct State
 
 	State(int _n ,Player& _player, Mutex^ _mtx)
 		: player(_player), mtx(_mtx), n(_n){}
+};
+
+
+ref struct State2
+{
+	Player& player; //最初の整数
+	State2(Player& _player)
+		: player(_player){}
 };
 
 TouhouAILogic::ImageRecognitionMgr::ImageRecognitionMgr()
@@ -55,11 +59,9 @@ void TouhouAILogic::ImageRecognitionMgr::Init()
 	recog.Init();
 }
 
-void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& _player)
+void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& player)
 {
-	player = _player;
-
-	player_th = gcnew Thread(gcnew ThreadStart(PlayerRecognition));
+	player_th = gcnew Thread(gcnew ParameterizedThreadStart(PlayerRecognition));
 	
 	screen_image = screen;
 
@@ -68,16 +70,12 @@ void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& _p
 	screen_planes.clear();
 	cv::split(screen_image, screen_planes);
 	
-	if (!player_th->IsAlive) {
-		player_th->Start();
-	}
+	player_th->Start(gcnew State2(player));
 
 	BulletThreadStart(screen,player);
 
 	BulletThreadJoin();
 	player_th->Join();
-
-	
 }
 
 static void BulletRecognition(System::Object^ s)
@@ -152,9 +150,10 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 
 static int player_count = 50;
 
-void PlayerRecognition()
+void PlayerRecognition(System::Object^ s)
 {
-	auto p_p = player.Point();
+	State2^ state = dynamic_cast<State2^>(s); //キャストが必要
+	auto p_p = state->player.Point();
 
 	const int h = 200;
 	const int w = 200;
@@ -180,8 +179,6 @@ void PlayerRecognition()
 	if (!player_rect.empty()) {
 		cv::rectangle(screen_image, player_rect[0], cv::Scalar(0, 255, 0), 2, 8, 0);
 	}
-
-	out << player_count << std::endl;
 
 	if (player_rect.empty()) {
 		if (--player_count < 0) {

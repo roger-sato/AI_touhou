@@ -15,4 +15,5 @@
 !TouhouAIUI/TouhouAIUI/bin/Release/template/*
 !TouhouAIUI/TouhouAIUI/bin/Release/template/temp/*
 !TouhouAIUI/TouhouAIUI/bin/Release/template/temp2/*
+!TouhouAIUI/TouhouAIUI/bin/Release/staff/*
 !.gitignore

@@ -12,6 +12,7 @@ namespace TouhouAILogic {
 		bool is_recognited = false;
 
 	public:
+		static int id;
 		Player();
 		Vec2D Point();
 		Vec2D MidPoint();

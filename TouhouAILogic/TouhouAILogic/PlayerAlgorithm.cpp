@@ -100,6 +100,8 @@ cv::Point ToVect()
 	return to_v;
 }
 
+static int safe_time = 40;
+
 void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image) {
 
 
@@ -137,9 +139,26 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 	cv::circle(screen_image, defp, std::sqrt(30000), cv::Scalar(0, 128, 255), 5);
 
 	if (to_v.x == 0 && to_v.y == 0 && bullet_rect.size() == 0) {
-		if (ss.x*ss.x + ss.y*ss.y > 30000) {
-			to_v += ss;
+		safe_time--;
+		if (safe_time < 0) {
+			if (ss.x*ss.x + ss.y*ss.y > 30000) {
+				if (ss.x > 0) {
+					to_v.x++;
+				}
+				else if (ss.x < 0) {
+					to_v.x--;
+				}
+				if (ss.y > 0) {
+					to_v.y++;
+				}
+				else if (ss.y < 0) {
+					to_v.y--;
+				}
+			}
 		}
+	}
+	else {
+		safe_time = 40;
 	}
 
 	cv::line(screen_image, player_p, player_p + to_v, cv::Scalar(0, 255, 255), 10);

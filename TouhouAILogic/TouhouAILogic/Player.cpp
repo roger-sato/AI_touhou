@@ -19,7 +19,7 @@ TouhouAILogic::Vec2D TouhouAILogic::Player::MidPoint()
 
 void TouhouAILogic::Player::Move(Vec2D v)
 {
-	int k = 11;
+	int k = 5;
 	if (v.X() > 0) {
 		if (v.Y() > 0) {
 			v = Vec2D(1 * k, 1 * k);
