@@ -17,6 +17,7 @@ namespace TouhouAILogic {
 		Thread^ bullet_th6;
 		Thread^ bullet_th7;
 		Thread^ bullet_th8;
+		Thread^ bullet_th9;
 
 		Thread^ player_th;
 

@@ -145,6 +145,7 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 	bullet_th6 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	bullet_th7 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	bullet_th8 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
+	bullet_th9 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	
 }
 
@@ -229,6 +230,7 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadStart(cv::Mat& screen_image
 	bullet_th6->Start(gcnew State(6,player, mtx));
 	bullet_th7->Start(gcnew State(7,player, mtx));
 	bullet_th8->Start(gcnew State(8,player, mtx));
+	bullet_th9->Start(gcnew State(9, player, mtx));
 	
 }
 
@@ -243,5 +245,6 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadJoin()
 	bullet_th6->Join();
 	bullet_th7->Join();
 	bullet_th8->Join();
+	bullet_th9->Join();
 	
 }
