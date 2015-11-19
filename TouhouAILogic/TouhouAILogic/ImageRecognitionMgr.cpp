@@ -15,8 +15,11 @@ static std::vector<Bullet> bullets;
 static std::vector<std::pair<cv::Mat, std::string>> player_image;
 static std::vector<std::pair<cv::Mat, std::string>> player_image_move;
 static std::vector<std::pair<cv::Mat, std::string>> bullet_image;
+static std::vector<std::pair<cv::Mat, std::string>> enemy_image;
 
 static cv::Rect bullet_search_rect;
+static cv::Rect enemy_search_rect;
+
 
 static cv::Mat screen_image;
 static ImageRecognition recog;
@@ -24,8 +27,12 @@ static std::vector<cv::Mat> screen_planes;
 
 static std::vector<cv::Mat> bullet_image_pyramid;
 static std::vector<std::vector<cv::Mat>> bullet_planes_pyramid;
+
+static std::vector<cv::Mat> enemy_image_pyramid;
+static std::vector<std::vector<cv::Mat>> enemy_planes_pyramid;
+
 static void PlayerRecognition(System::Object^ s);
-//static void EnemyRecognition();
+static void EnemyRecognition(System::Object^ s);
 static void BulletRecognition(System::Object^ s);
 
 ref struct State
@@ -55,7 +62,7 @@ void TouhouAILogic::ImageRecognitionMgr::Init()
 	ImageData::Instance().ImageMap("player", player_image);
 	ImageData::Instance().ImageMap("move_player", player_image_move);
 	ImageData::Instance().ImageMap("bullet", bullet_image);
-
+	ImageData::Instance().ImageMap("enemy", enemy_image);
 	recog.Init();
 }
 
@@ -66,6 +73,7 @@ void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& pl
 	screen_image = screen;
 
 	BulletThreadSet();
+	EnemyThreadSet();
 
 	screen_planes.clear();
 	cv::split(screen_image, screen_planes);
@@ -73,8 +81,10 @@ void TouhouAILogic::ImageRecognitionMgr::Recognition(cv::Mat& screen ,Player& pl
 	player_th->Start(gcnew State2(player));
 
 	BulletThreadStart(screen,player);
+	EnemyThreadStart(screen, player);
 
 	BulletThreadJoin();
+	EnemyThreadJoin();
 	player_th->Join();
 }
 
@@ -134,6 +144,7 @@ void TouhouAILogic::ImageRecognitionMgr::Bullets(std::vector<Bullet>& b)
 	b = bullets;
 }
 
+
 void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 {
 	bullet_th1 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
@@ -146,6 +157,10 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadSet()
 	bullet_th7 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	bullet_th8 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	bullet_th9 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
+	bullet_th10 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
+	bullet_th11 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
+	bullet_th12 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
+	bullet_th13 = gcnew Thread(gcnew ParameterizedThreadStart(BulletRecognition));
 	
 }
 
@@ -165,7 +180,7 @@ void PlayerRecognition(System::Object^ s)
 	cv::Rect roi_rect(p_p.X(), p_p.Y(), w, h);
 
 	//プレイヤー探索範囲
-	cv::rectangle(screen_image, roi_rect, cv::Scalar(100, 100, 0), 2, 8, 0);
+	//cv::rectangle(screen_image, roi_rect, cv::Scalar(100, 100, 0), 2, 8, 0);
 	
 
 	std::vector<cv::Mat> player_planes;
@@ -178,7 +193,7 @@ void PlayerRecognition(System::Object^ s)
 	recog.PlayerRecognition(screen_image, player_planes, player_rect, Vec2D(p_p.X(), p_p.Y()));
 
 	if (!player_rect.empty()) {
-		cv::rectangle(screen_image, player_rect[0], cv::Scalar(0, 255, 0), 2, 8, 0);
+		cv::rectangle(screen_image, player_rect[0], cv::Scalar(255, 0, 255), 2, 8, 0);
 	}
 
 	if (player_rect.empty()) {
@@ -231,13 +246,15 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadStart(cv::Mat& screen_image
 	bullet_th7->Start(gcnew State(7,player, mtx));
 	bullet_th8->Start(gcnew State(8,player, mtx));
 	bullet_th9->Start(gcnew State(9, player, mtx));
-	
+	bullet_th10->Start(gcnew State(10, player, mtx));
+	bullet_th11->Start(gcnew State(11, player, mtx));
+	bullet_th12->Start(gcnew State(12, player, mtx));
+	bullet_th13->Start(gcnew State(13, player, mtx));
 }
 
 void TouhouAILogic::ImageRecognitionMgr::BulletThreadJoin()
 {
 	bullet_th1->Join();
-	
 	bullet_th2->Join();
 	bullet_th3->Join();
 	bullet_th4->Join();
@@ -246,5 +263,91 @@ void TouhouAILogic::ImageRecognitionMgr::BulletThreadJoin()
 	bullet_th7->Join();
 	bullet_th8->Join();
 	bullet_th9->Join();
-	
+	bullet_th10->Join();
+	bullet_th11->Join();
+	bullet_th12->Join();
+	bullet_th13->Join();
+}
+
+
+static void EnemyRecognition(System::Object^ s)
+{
+	State^ state = dynamic_cast<State^>(s); //キャストが必要
+
+	std::vector<cv::Rect> b;
+
+	state->mtx->WaitOne();
+	auto img = enemy_image[state->n - 1];
+	state->mtx->ReleaseMutex();
+
+	std::vector<cv::Mat> enemy_p;
+	cv::buildPyramid(img.first, enemy_p, 2);
+
+	recog.EnemyRecognition(screen_image, std::pair<cv::Mat, std::string>(enemy_p[2], img.second), b ,bullet_planes_pyramid[2], Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+
+	if (!b.empty()) {
+		b.clear();
+		recog.EnemyRecognition(screen_image, std::pair<cv::Mat, std::string>(enemy_p[1], img.second),b, bullet_planes_pyramid[1], Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+
+		if (!b.empty()) {
+			b.clear();
+			recog.EnemyRecognition(screen_image, std::pair<cv::Mat, std::string>(enemy_p[0], img.second),b, bullet_planes_pyramid[0], Vec2D(bullet_search_rect.x, bullet_search_rect.y));
+
+		}
+	}
+
+	state->mtx->WaitOne();
+	for (auto x : b) {
+		enemy_rect.push_back(x);
+	}
+	state->mtx->ReleaseMutex();
+}
+
+void TouhouAILogic::ImageRecognitionMgr::EnemyThreadSet()
+{
+	enemy_th1 = gcnew Thread(gcnew ParameterizedThreadStart(EnemyRecognition));
+
+	//enemy_th2 = gcnew Thread(gcnew ParameterizedThreadStart(EnemyRecognition));
+
+}
+
+void TouhouAILogic::ImageRecognitionMgr::EnemyThreadStart(cv::Mat& screen_image, Player& player)
+{
+	Mutex^ mtx = gcnew Mutex;
+
+	const int hai = 200;
+	const int wid = 200;
+
+	auto p_p = player.MidPoint();
+	p_p.Set(std::max(p_p.X() - (wid / 2), 0), std::max(p_p.Y() - (hai / 2), 0));
+
+	enemy_search_rect = cv::Rect(p_p.X(), p_p.Y(), std::min(screen_image.cols - p_p.X(), wid), std::min(screen_image.rows - p_p.Y(), hai));
+
+	//cv::rectangle(screen_image, bullet_search_rect, cv::Scalar(0, 0, 255), 2, 8, 0);
+
+	enemy_rect.clear();
+	enemy_planes_pyramid.clear();
+	enemy_image_pyramid.clear();
+
+	cv::Mat enemy_image = screen_image(enemy_search_rect);
+
+	cv::buildPyramid(enemy_image, enemy_image_pyramid, 2);
+
+	for (auto image : enemy_image_pyramid) {
+		cv::vector<cv::Mat> enemy_p;
+		cv::split(image, enemy_p);
+		enemy_planes_pyramid.push_back(enemy_p);
+	}
+
+
+	enemy_th1->Start(gcnew State(1, player, mtx));
+//	enemy_th2->Start(gcnew State(2, player, mtx));
+
+}
+
+void TouhouAILogic::ImageRecognitionMgr::EnemyThreadJoin()
+{
+	enemy_th1->Join();
+//	enemy_th2->Join();
+
 }

@@ -40,7 +40,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 
 		TemplateMatch(planes, xy, result);
-		SearchMatch_p(result, 0.75f, player_maxpt, xy, p);
+		SearchMatch_p(result, 0.7f, player_maxpt, xy, p);
 		
 		if (!player_maxpt.empty())
 			return;
@@ -54,7 +54,7 @@ void TouhouAILogic::ImageRecognition::PlayerRecognition(cv::Mat& img, std::vecto
 		cv::Mat result;
 
 		TemplateMatch(planes, xy, result);
-		SearchMatch_p(result, 0.75f, player_maxpt, xy, p);
+		SearchMatch_p(result, 0.7f, player_maxpt, xy, p);
 
 		if (!player_maxpt.empty())
 			return;
@@ -71,7 +71,7 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 
 	TemplateMatch(planes, temp, result);
 
-	SearchMatch(result, 0.75f, temp_maxpt, temp, p);
+	SearchMatch(result, 0.81f, temp_maxpt, temp, p);
 
 	for (auto y : temp_maxpt) {
 		Bullet b(temp);
@@ -83,26 +83,14 @@ void TouhouAILogic::ImageRecognition::BulletRecognitionInd(cv::Mat & img, std::p
 }
 
 
-void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p)
+void TouhouAILogic::ImageRecognition::EnemyRecognition(cv::Mat& img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Rect>& enemy_maxpt, std::vector<cv::Mat>& planes , Vec2D p)
 {
-	std::vector<std::pair<cv::Mat,std::string>> enemy_image;
-	ImageData::Instance().ImageMap("enemy",enemy_image);
+	cv::Mat result;
 
-	enemy_maxpt.clear();
+	TemplateMatch(planes, temp, result);
 
+	SearchMatch(result, 0.7f, enemy_maxpt, temp, p);
 
-	if (enemy_image.empty())
-		return;
-
-	auto xy = enemy_image[enemy_i];
-	enemy_i = ++enemy_i% enemy_image.size();
-
-	for (auto xy : enemy_image) {
-		cv::Mat result;
-		TemplateMatch(planes, xy, result);
-
-		SearchMatch(result, 0.65f, enemy_maxpt,xy , p);
-	}
 }
 
 

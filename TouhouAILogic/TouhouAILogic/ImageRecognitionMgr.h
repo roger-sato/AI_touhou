@@ -18,6 +18,14 @@ namespace TouhouAILogic {
 		Thread^ bullet_th7;
 		Thread^ bullet_th8;
 		Thread^ bullet_th9;
+		Thread^ bullet_th10;
+		Thread^ bullet_th11;
+		Thread^ bullet_th12;
+		Thread^ bullet_th13;
+
+		Thread^ enemy_th1;
+		Thread^ enemy_th2;
+		Thread^ enemy_th3;
 
 		Thread^ player_th;
 
@@ -37,6 +45,11 @@ namespace TouhouAILogic {
 		void BulletThreadStart(cv::Mat& ,Player&);
 		void BulletThreadJoin();
 			
+
+		void EnemyThreadSet();
+		void EnemyThreadStart(cv::Mat&, Player&);
+		void EnemyThreadJoin();
+
 	};
 
 }

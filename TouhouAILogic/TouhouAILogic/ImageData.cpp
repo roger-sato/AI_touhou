@@ -17,15 +17,17 @@ void TouhouAILogic::ImageData::Init()
 	AddImage("bullet", "bullet_4", "R");
 	AddImage("bullet", "bullet_5", "R");
 	AddImage("bullet", "bullet_6", "B");
+
 	AddImage("bullet", "bullet_7", "R");
 	AddImage("bullet", "bullet_8", "R");
 	AddImage("bullet", "bullet_9", "R");
 
+	AddImage("bullet", "bullet_10", "B");
+	AddImage("bullet", "bullet_11", "R");
+	AddImage("bullet", "bullet_12", "R");
+	AddImage("bullet", "bullet_13", "R");
 
-
-
-
-	//AddImage("enemy","enemy_1" , "G");
+	AddImage("enemy","enemy_1" , "G");
 
 	AddImage("player", "player_1", "G");
 	AddImage("player", "player_2", "G");

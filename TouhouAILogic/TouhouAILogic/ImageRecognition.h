@@ -8,7 +8,6 @@
 namespace TouhouAILogic {
 	public class ImageRecognition 
 	{
-		std::vector<cv::Rect> enemy_maxpt;
 		std::vector<cv::Rect> bullet_maxpt;
 		std::vector<Bullet> bullet;
 
@@ -26,7 +25,7 @@ namespace TouhouAILogic {
 		void Init();
 		void PlayerRecognition(cv::Mat& img, std::vector<cv::Mat>& planes ,std::vector<cv::Rect>& , Vec2D p);
 		void BulletRecognitionInd(cv::Mat& img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Mat>& planes, std::vector<Bullet>& bullet_,Vec2D p);
-		void EnemyRecognition(cv::Mat& img, std::vector<cv::Mat>& planes , Vec2D p);
+		void EnemyRecognition(cv::Mat& img, std::pair<cv::Mat, std::string>& temp, std::vector<cv::Rect>& enemy_maxpt, std::vector<cv::Mat>& planes , Vec2D p);
 		void DrawRectangle(cv::Mat& img, std::vector<cv::Rect>& maxpt, cv::Scalar color);
 		void ScreenShot();
 

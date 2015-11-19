@@ -96,5 +96,5 @@ void TouhouAILogic::SendMove::Update()
 		KeyManage::Instance().OnZ();
 	}
 
-	time = ++time % 100;
+	time = ++time % 10;
 }

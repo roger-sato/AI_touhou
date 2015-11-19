@@ -9,11 +9,11 @@ using namespace TouhouAILogic;
 SendMove send_move;
 
 void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& player, cv::Mat& screen_image);
-void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image);
+void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, std::vector<cv::Rect> enemy_rect , Player& player, cv::Mat& screen_image);
 
-void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image)
+void TouhouAILogic::PlayerAlgorithm::PlayerUpdate(cv::Point player_p, std::list<Bullet>& bullet_rect, std::vector<cv::Rect>& enemy_rect , Player& player, cv::Mat& screen_image)
 {
-	Algorithm2(player_p, bullet_rect, player, screen_image);
+	Algorithm2(player_p, bullet_rect, enemy_rect, player, screen_image);
 }
 
 void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& player, cv::Mat& screen_image) {
@@ -62,7 +62,7 @@ void Algorithm1(cv::Point player_p, std::list<Bullet> bullet_rect, Player& playe
 
 static int seach_table[4][4] = { 0 };
 
-void SetTable(cv::Point player_p, std::list<Bullet>& bullet_rect, int s = 70)
+void SetTable(cv::Point player_p, std::list<Bullet>& bullet_rect, std::vector<cv::Rect>& enemy_rect, int s = 70)
 {
 	memset(seach_table, 0, sizeof(seach_table));
 
@@ -84,6 +84,16 @@ void SetTable(cv::Point player_p, std::list<Bullet>& bullet_rect, int s = 70)
 			}
 		}
 	}
+
+	for (auto x : enemy_rect) {
+		auto dv = cv::Point(x.x + 10,x.y + 10) - player_p;
+
+		int t = 2 * s;
+
+		if (-t < dv.x && -t < dv.y && dv.x < t && dv.y < t) {
+			seach_table[(dv.x + (t - 1)) / s][(dv.y + (t - 1)) / s] += 3;
+		}
+	}
 }
 
 cv::Point ToVect()
@@ -100,14 +110,14 @@ cv::Point ToVect()
 	return to_v;
 }
 
-static int safe_time = 40;
+static int safe_time = 25;
 
-void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& player, cv::Mat& screen_image) {
+void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, std::vector<cv::Rect> enemy_rect ,Player& player, cv::Mat& screen_image) {
 
 
 	int s = 50;
 
-	SetTable(player_p, bullet_rect, s);
+	SetTable(player_p, bullet_rect, enemy_rect, s);
 
 	cv::Rect table_rect[4][4];
 
@@ -127,7 +137,7 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
-			cv::rectangle(screen_image, table_rect[i][j], cv::Scalar(0, 0, std::min(255, 50 * seach_table[i][j])), 4);
+			cv::rectangle(screen_image, table_rect[i][j], cv::Scalar(0, std::max(0,255 - 50* seach_table[i][j]), std::min(255, 50 * seach_table[i][j])), 4);
 		}
 	}
 
@@ -158,10 +168,10 @@ void Algorithm2(cv::Point player_p, std::list<Bullet>& bullet_rect, Player& play
 		}
 	}
 	else {
-		safe_time = 40;
+		safe_time = 25;
 	}
 
-	cv::line(screen_image, player_p, player_p + to_v, cv::Scalar(0, 255, 255), 10);
+	//cv::line(screen_image, player_p, player_p + to_v, cv::Scalar(0, 255, 255), 10);
 	player.Move(Vec2D(to_v.x, to_v.y));
 	send_move.Update();
 }

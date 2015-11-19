@@ -40,21 +40,24 @@ void TouhouAILogic::ControlManager::Proc()
 	player.InputPoint(prect);
 
 	std::vector<Bullet> bb;
+	std::vector<cv::Rect> ee;
+	recogmg.EnemyRect(ee);
 	recogmg.Bullets(bb);
 	bullets.InputRecoBullets(bb);
 
 	recog.DrawRectangle(screen_image, bullets.BulletsRect(), cv::Scalar(0, 255, 0));
+	recog.DrawRectangle(screen_image, ee, cv::Scalar(0, 0, 190));
 
 	auto p = player.MidPoint();
 
-	debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
-	debug_th->Start();
+	//debug_th = gcnew Thread(gcnew ThreadStart(SaveScreenImage));
+	//debug_th->Start();
 
-	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(), player, screen_image);
+	player_alg.PlayerUpdate(cv::Point(p.X(), p.Y()), bullets.OutRecoBullets(),ee, player, screen_image);
 
 	cv::imshow("matching", screen_image);
 
-	debug_th->Join();
+	//debug_th->Join();
 }
 
 void SaveScreenImage()
@@ -78,7 +81,3 @@ void TouhouAILogic::ControlManager::GetPrintScreenModule()
 }
 
 
-void EnemyModule()
-{
-	recog.EnemyRecognition(screen_image, screen_planes, Vec2D(0, 0));
-}

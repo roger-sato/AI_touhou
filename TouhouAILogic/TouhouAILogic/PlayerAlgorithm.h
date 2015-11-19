@@ -7,6 +7,6 @@
 namespace TouhouAILogic {
 	class PlayerAlgorithm {
 	public:
-		void PlayerUpdate(cv::Point player_p , std::list<Bullet>& bullet_rect,Player& pla,cv::Mat&);
+		void PlayerUpdate(cv::Point player_p , std::list<Bullet>& bullet_rect, std::vector<cv::Rect>& enemy_rect , Player& pla,cv::Mat&);
 	};
 }
