@@ -306,9 +306,6 @@ static void EnemyRecognition(System::Object^ s)
 void TouhouAILogic::ImageRecognitionMgr::EnemyThreadSet()
 {
 	enemy_th1 = gcnew Thread(gcnew ParameterizedThreadStart(EnemyRecognition));
-
-	//enemy_th2 = gcnew Thread(gcnew ParameterizedThreadStart(EnemyRecognition));
-
 }
 
 void TouhouAILogic::ImageRecognitionMgr::EnemyThreadStart(cv::Mat& screen_image, Player& player)
