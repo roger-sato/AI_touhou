@@ -9,7 +9,6 @@
 
 void TouhouAILogic::ImageData::Init()
 {
-	
 	AddImage("bullet","bullet_1" , "R");
 	AddImage("bullet","bullet_2" , "R");
 	AddImage("bullet","bullet_3" , "R");
